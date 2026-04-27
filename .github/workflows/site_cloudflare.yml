@@ -19,20 +19,20 @@ on:
   workflow_dispatch:
   pull_request:
     paths:
-      - 'apps/site/**'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
-      - '.github/workflows/site_cloudflare.yml'
+      - "apps/site/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - ".github/workflows/site_cloudflare.yml"
   push:
     branches:
       - main
     paths:
-      - 'apps/site/**'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
-      - '.github/workflows/site_cloudflare.yml'
+      - "apps/site/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - ".github/workflows/site_cloudflare.yml"
 
 jobs:
   build:
@@ -76,14 +76,18 @@ jobs:
         with:
           node-version-file: ${{ env.NODE_VERSION_FILE }}
 
+      - name: Install dependencies
+        run: |
+          pnpm install --frozen-lockfile
+
       - name: Load secrets from 1Password
         uses: 1Password/load-secrets-action@dafbe7cb03502b260e2b2893c753c352eee545bf # v3
         with:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: 'op://LV48/Cloudflare Wrangler/Account ID'
-          CLOUDFLARE_API_TOKEN: 'op://LV48/Cloudflare Wrangler/API Token'
+          CLOUDFLARE_ACCOUNT_ID: "op://LV48/Cloudflare Wrangler/Account ID"
+          CLOUDFLARE_API_TOKEN: "op://LV48/Cloudflare Wrangler/API Token"
 
       - name: Download build artifact
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
