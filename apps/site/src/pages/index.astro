@@ -1,14 +1,208 @@
 ---
+import '../styles/global.css';
+
+import { CheckCircle2, GitBranch, ShieldCheck, Terminal } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+
+const PRINCIPLES = [
+  'Plan before mutation',
+  'Record intent, trade-offs, and rollback',
+  'Keep implementation tied to durable decisions',
+];
+
+const RECORDS = [
+  {
+    name: 'ADR',
+    label: 'Architecture',
+    text: 'Capture system decisions before they disappear into chat history.',
+  },
+  {
+    name: 'FEATURE',
+    label: 'Product',
+    text: 'Shape user-facing work into scoped, reviewable plans.',
+  },
+  {
+    name: 'CHANGE',
+    label: 'Execution',
+    text: 'Turn approved intent into tracked implementation steps.',
+  },
+];
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Backtrail gives agent workflows durable ADR, FEATURE, and CHANGE records."
+    />
     <title>Backtrail</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body>
-    <h1>Backtrail</h1>
-    <p>Agent workflow skills</p>
+  <body class="text-foreground antialiased">
+    <main class="min-h-screen overflow-hidden">
+      <section class="relative mx-auto grid min-h-[92vh] w-full max-w-7xl gap-10 px-5 py-6 sm:px-8 lg:grid-cols-[1.08fr_0.92fr] lg:px-10">
+        <div class="absolute inset-x-5 top-6 h-px bg-foreground/20 sm:inset-x-8 lg:inset-x-10"></div>
+
+        <div class="flex min-h-[68vh] flex-col justify-between pt-12 lg:min-h-[82vh]">
+          <nav class="flex items-center justify-between gap-4">
+            <a href="/" class="font-mono text-sm font-semibold tracking-normal">
+              Backtrail
+            </a>
+            <div class="hidden items-center gap-2 sm:flex">
+              <Badge variant="outline" className="border-foreground/25 bg-background/70 font-mono">
+                agent workflow skills
+              </Badge>
+            </div>
+          </nav>
+
+          <div class="max-w-3xl py-16 sm:py-20 lg:py-24">
+            <Badge className="mb-7 bg-accent text-accent-foreground shadow-none">
+              ADR / FEATURE / CHANGE
+            </Badge>
+            <h1 class="max-w-[11ch] text-6xl font-semibold leading-[0.9] tracking-normal text-balance sm:text-7xl lg:text-8xl">
+              Durable trails for agent work.
+            </h1>
+            <p class="mt-7 max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">
+              Backtrail turns planning, architecture decisions, and implementation work into
+              visible records. Less hidden context. More reversible execution.
+            </p>
+            <div class="mt-9 flex flex-row flex-wrap items-center gap-6">
+              <Button asChild size="lg" className="h-12 rounded-md bg-accent px-5 text-accent-foreground hover:bg-accent/90">
+                <a href="#workflow">
+                  <span class="whitespace-nowrap">See workflow</span>
+                </a>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="h-12 rounded-md border-foreground/25 bg-background/70 px-5">
+                <a href="#records">Browse records</a>
+              </Button>
+            </div>
+          </div>
+
+          <div class="grid gap-3 border-y border-foreground/20 py-5 sm:grid-cols-3">
+            {PRINCIPLES.map((principle) => (
+              <div class="flex items-start gap-3">
+                <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-accent" />
+                <span class="text-sm font-medium leading-5">{principle}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="relative flex items-center pb-10 lg:pb-0">
+          <div class="relative w-full border border-foreground/20 bg-card/80 p-3 shadow-[14px_14px_0_oklch(0.77_0.15_58.4_/_0.18)] backdrop-blur">
+            <div class="flex items-center justify-between border-b border-foreground/15 px-3 py-2 font-mono text-xs">
+              <span>change 42</span>
+              <span class="text-muted-foreground">reversible</span>
+            </div>
+            <div class="grid gap-3 p-3">
+              <div class="rounded-md bg-background p-5 text-foreground ring-1 ring-foreground/10">
+                <div class="mb-10 flex items-center justify-between font-mono text-xs text-muted-foreground">
+                  <span>STATUS</span>
+                  <span>READY</span>
+                </div>
+                <p class="text-3xl font-semibold leading-none text-balance">
+                  Agent modifies system only after intent is named.
+                </p>
+              </div>
+              <div class="grid gap-3 sm:grid-cols-2">
+                <Card className="rounded-md border-foreground/15 bg-background/80 py-5 shadow-none">
+                  <CardHeader className="px-5">
+                    <CardTitle className="flex items-center gap-2 text-base">
+                      <ShieldCheck className="size-4 text-accent" />
+                      Guardrail
+                    </CardTitle>
+                    <CardDescription>
+                      Risk zones stay explicit: auth, money, migrations, distributed state.
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+                <Card className="rounded-md border-foreground/15 bg-background/80 py-5 shadow-none">
+                  <CardHeader className="px-5">
+                    <CardTitle className="flex items-center gap-2 text-base">
+                      <GitBranch className="size-4 text-accent" />
+                      Trail
+                    </CardTitle>
+                    <CardDescription>
+                      Decisions connect to changes instead of living as orphan notes.
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </div>
+              <div class="grid gap-3 rounded-md border border-foreground/15 bg-muted/70 p-4 font-mono text-xs leading-6 text-muted-foreground">
+                <div class="flex items-center gap-2 text-foreground">
+                  <Terminal className="size-3.5" />
+                  <span>backtrail create improve_agent_handoff</span>
+                </div>
+                <div class="flex items-center gap-2 text-foreground">
+                  <Terminal className="size-3.5" />
+                  <span>backtrail implement change 42</span>
+                </div>
+                <p>plan accepted - edits scoped - verification required - rollback noted</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="workflow" class="border-y border-foreground/15 bg-card/70 text-foreground">
+        <div class="mx-auto grid max-w-7xl gap-8 px-5 py-16 sm:px-8 lg:grid-cols-[0.7fr_1.3fr] lg:px-10">
+          <div>
+            <Badge variant="outline" className="border-foreground/25 text-foreground">
+              workflow
+            </Badge>
+            <h2 class="mt-5 text-4xl font-semibold leading-none text-balance">
+              Slow down where mistakes cost.
+            </h2>
+          </div>
+          <div class="grid gap-4 md:grid-cols-3">
+            {['Ground truth', 'Choose path', 'Ship change'].map((step, index) => (
+              <div class="border border-foreground/15 bg-background/45 p-5">
+                <div class="font-mono text-sm text-accent">0{index + 1}</div>
+                <h3 class="mt-8 text-xl font-semibold">{step}</h3>
+                <p class="mt-3 text-sm leading-6 text-muted-foreground">
+                  {index === 0 && 'Read repo, docs, and prior decisions before proposing work.'}
+                  {index === 1 && 'State trade-offs, constraints, and rollback before mutation.'}
+                  {index === 2 && 'Implement against accepted record, then verify actual behavior.'}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="records" class="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:px-10">
+        <div class="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
+          <div>
+            <Badge variant="secondary">record types</Badge>
+            <h2 class="mt-5 text-4xl font-semibold leading-none text-balance">
+              Three records, one trail.
+            </h2>
+          </div>
+          <div class="grid gap-4">
+            {RECORDS.map((record) => (
+              <Card className="rounded-none border-foreground/15 bg-card/75 py-0 shadow-none">
+                <CardContent className="grid gap-5 p-5 sm:grid-cols-[9rem_1fr] sm:items-center">
+                  <div>
+                    <div class="font-mono text-2xl font-semibold">{record.name}</div>
+                    <div class="mt-1 text-xs uppercase text-muted-foreground">{record.label}</div>
+                  </div>
+                  <p class="text-base leading-7 text-muted-foreground">{record.text}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
   </body>
 </html>
