@@ -76,6 +76,10 @@ jobs:
         with:
           node-version-file: ${{ env.NODE_VERSION_FILE }}
 
+      - name: Setup pnpm
+        run: |
+          corepack enable pnpm
+
       - name: Install dependencies
         run: |
           pnpm install --frozen-lockfile
