@@ -1,5 +1,5 @@
 ---
-name: review
+name: backtrail-review
 description: Review implementation for a CHANGE, including architectural/code review and validation against linked ADRs and FEATUREs
 ---
 
