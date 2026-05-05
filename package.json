@@ -9,6 +9,10 @@
   "files": [
     "README.md"
   ],
-  "scripts": {},
-  "devDependencies": {}
+  "scripts": {
+    "deps:update": "ncu --upgrade --enginesNode --format group --reject @types/node"
+  },
+  "devDependencies": {
+    "npm-check-updates": "22.1.0"
+  }
 }
