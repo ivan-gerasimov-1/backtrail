@@ -5,6 +5,8 @@ export interface IInitResult {
   errors: string[];
 }
 
+export type TInitStepResult = Omit<IInitResult, "success">;
+
 export type TInitOptions = {
   cwd: string;
 };
