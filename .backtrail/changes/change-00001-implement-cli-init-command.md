@@ -25,7 +25,7 @@ Excludes implementing artifact creation workflows, migrations, semantic validati
 
 ## Tasks
 
-- [TASK-00001](tasks/task-00001-inspect-cli-init-contract.md)
+- [TASK-00001](tasks/task-00001-add-cli-init-acceptance-tests.md)
 - [TASK-00002](tasks/task-00002-add-backtrail-file-creation-helper.md)
 - [TASK-00003](tasks/task-00003-discover-required-backtrail-files.md)
 - [TASK-00004](tasks/task-00004-wire-cli-init-command.md)

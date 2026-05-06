@@ -1,8 +1,8 @@
 # TASK-00004: Wire CLI init command
 
-| Status  | Date       | Change       | Blocked By              | Blocks     |
-| ------- | ---------- | ------------ | ----------------------- | ---------- |
-| Blocked | 2026-05-06 | CHANGE-00001 | TASK-00002, TASK-00003 | TASK-00005 |
+| Status  | Date       | Change       | Blocked By                         | Blocks     |
+| ------- | ---------- | ------------ | ---------------------------------- | ---------- |
+| Blocked | 2026-05-06 | CHANGE-00001 | TASK-00001, TASK-00002, TASK-00003 | TASK-00005 |
 
 ## Goal
 

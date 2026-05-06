@@ -1,8 +1,8 @@
 # TASK-00002: Add Backtrail file creation helper
 
-| Status  | Date       | Change       | Blocked By | Blocks     |
-| ------- | ---------- | ------------ | ---------- | ---------- |
-| Blocked | 2026-05-06 | CHANGE-00001 | TASK-00001 | TASK-00004 |
+| Status | Date       | Change       | Blocked By | Blocks     |
+| ------ | ---------- | ------------ | ---------- | ---------- |
+| Todo   | 2026-05-06 | CHANGE-00001 | -          | TASK-00004 |
 
 ## Goal
 
