@@ -6,8 +6,7 @@ function main() {
   try {
     cli().parse();
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Unknown CLI error";
+    let message = error instanceof Error ? error.message : "Unknown CLI error";
 
     console.error(message);
 
