@@ -45,4 +45,8 @@ This document describes the development conventions, code style guardrails, and 
 - Prefix enum and constant object names with `E`.
 - Use PascalCase for enums and constant objects.
 - Use objects with `as const` + `typeof` for union types.
-- Do not use single-letter variable names
+
+## Linting
+
+- Do not use single-letter variable names.
+- Do not use `return await`.
