@@ -9,6 +9,8 @@ Create TASK documentation only. Inspect code as needed, but write only TASK docs
 
 TASK records split one CHANGE scope contract into one or more small, reviewable implementation checkpoints.
 
+Every TASK must produce concrete implementation output such as code, tests, docs, config, or generated user-visible artifacts. Do required inspection, planning, and contract definition during task creation; do not create analysis-only, inspection-only, or contract-only TASK records.
+
 ## Input
 
 Use the text after this skill invocation as the task brief. The brief should identify a CHANGE id or provide enough context to choose one CHANGE.
@@ -56,6 +58,8 @@ Use the text after this skill invocation as the task brief. The brief should ide
    - If `.backtrail/tasks.md` is missing, create it and start at `TASK-00001` unless the brief has an explicit starting number.
 6. Split the CHANGE into the smallest useful TASK records.
    - If only one task is needed, create one.
+   - Each task must have a concrete output that changes project artifacts.
+   - Do not create prerequisite tasks whose only output is inspection, planning, contract definition, or research.
    - Prefer 150-250 lines or one logical commit as the rough upper bound per task.
    - Ten or more tasks is acceptable when that keeps review small.
    - Use sequential blocking when tasks depend on previous checkpoints.
@@ -98,5 +102,6 @@ Use the text after this skill invocation as the task brief. The brief should ide
 - Do not mark TASK records as `Done` or CHANGE records as `Done`.
 - Do not treat numbers in input body as TASK numbers.
 - Do not create TASKs without one backing CHANGE.
+- Do not create TASKs without concrete artifact output; inspect and define execution steps before writing TASK docs instead.
 - Do not silently expand CHANGE scope; update or create CHANGE first.
 - Keep CHANGE status `Proposed` until implementation finishes; TASK progress drives staged work.
