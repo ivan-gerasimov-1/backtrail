@@ -16,6 +16,17 @@ Use the text after this skill invocation as the change brief.
 ## Resources
 
 - Use `assets/change-template.md` as the CHANGE template.
+- Use `backtrail-create-task` after CHANGE creation when implementation needs staged review checkpoints.
+- Always assess whether the CHANGE should have TASK records and tell the user the recommendation before writing.
+- CHANGE template includes a placeholder `## Tasks` section.
+- Delete the `## Tasks` section when no TASK records are required.
+- When TASKs exist, the CHANGE file must link them through the canonical `## Tasks` section:
+
+```md
+## Tasks
+
+- [TASK-NNNNN](tasks/task-NNNNN-title-slug.md)
+```
 
 ## Statuses
 
@@ -48,14 +59,22 @@ Use the text after this skill invocation as the change brief.
    - implementation shape
    - verification
    - rollback
+   - TASK recommendation: `required`, `recommended`, or `not needed`, with one short reason
+   - Use `required` when work is large, risky, parallelizable, depends on multiple checkpoints, or likely needs staged review.
+   - Use `recommended` when the CHANGE is moderate but has useful checkpoints.
+   - Use `not needed` only when the CHANGE is small and one review is enough.
 7. Ask only questions that change scope, compatibility, verification, or rollback.
 8. Create `.backtrail/changes/change-NNNNN-title-slug.md` from `assets/change-template.md`.
-   - If the estimated implementation diff exceeds 500 lines, create several subsequent CHANGE files, each blocked by the previous record.
-   - For split CHANGE records, save the first record as `Proposed` with `Blocks: CHANGE-NNNNN` for the next record.
-   - Save each later split CHANGE record as `Blocked` with `Blocked By: CHANGE-NNNNN` for the previous record.
-   - Keep dependency links bidirectional: if a CHANGE lists another CHANGE in `Blocked By`, the blocker lists it in `Blocks`.
+   - If the TASK recommendation is `not needed`, delete the placeholder `## Tasks` section from the CHANGE file.
+   - If the estimated implementation diff exceeds 500 lines or needs multiple reviewable checkpoints, keep one CHANGE as the scope contract and recommend `backtrail-create-task` to split implementation work.
+   - Create multiple CHANGE records only when work has separate scope contracts or dependency relationships independent of task-level staging.
+   - Keep CHANGE dependency links bidirectional: if a CHANGE lists another CHANGE in `Blocked By`, the blocker lists it in `Blocks`.
 9. Save the CHANGE and its `.backtrail/changes.md` entry with status, ADR links, blocked-by links, blocks links, and title/summary. Use `Proposed` unless the CHANGE is blocked by another CHANGE.
-10. Stop after docs/status changes. Do not implement code.
+10. When the TASK recommendation is `required` or `recommended`, ask whether to proceed with creating TASK records.
+    - Use Yes/No buttons when `request_user_input` is available.
+    - `Yes`: use `backtrail-create-task` with the selected CHANGE.
+    - `No`: leave the CHANGE as created and report that implementation will run as one CHANGE unless TASKs are created later.
+11. Stop after docs/status changes. Do not implement code.
 
 ## Question UX
 
@@ -66,7 +85,7 @@ Use the text after this skill invocation as the change brief.
 
 ## Guardrails
 
-- Do not change implementation code, ADR files, configs, or tests.
+- Do not change implementation code, ADR files, FEATURE files, TASK files, configs, or tests.
 - Do not overwrite existing CHANGE files.
 - Do not mark CHANGE as `Done`.
 - Do not treat numbers in input body as CHANGE numbers.

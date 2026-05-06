@@ -12,7 +12,9 @@
     "backtrail-create-adr",
     "backtrail-create-change",
     "backtrail-create-feature",
-    "backtrail-implement"
+    "backtrail-create-task",
+    "backtrail-implement",
+    "backtrail-review"
   ],
   "keywords": [
     "agents",

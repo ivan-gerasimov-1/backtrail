@@ -5,7 +5,7 @@ description: Review implementation for a CHANGE, including architectural/code re
 
 ## Purpose
 
-Review an implementation for a selected CHANGE record. Validate that the code satisfies the CHANGE scope, linked ADR decisions, linked FEATURE acceptance criteria, project conventions, and verification expectations.
+Review an implementation for a selected CHANGE record. Validate that the code satisfies the CHANGE scope, linked TASK scope when present, linked ADR decisions, linked FEATURE acceptance criteria, project conventions, and verification expectations.
 
 This skill reviews only. It must not implement fixes or update Backtrail statuses.
 
@@ -16,6 +16,7 @@ Use the text after this skill invocation to select the CHANGE record.
 ## Review Scope
 
 - CHANGE implementation scope and stated verification
+- Linked TASK scope, acceptance criteria, dependency state, and stated verification
 - Linked ADR decisions and constraints
 - Linked FEATURE behavior and acceptance criteria
 - Architectural fit and module boundaries
@@ -24,7 +25,7 @@ Use the text after this skill invocation to select the CHANGE record.
 
 ## Workflow
 
-2. Read `.backtrail/changes.md`, `.backtrail/adl.md`, and `.backtrail/features.md` when they exist.
+2. Read `.backtrail/changes.md`, `.backtrail/tasks.md`, `.backtrail/adl.md`, and `.backtrail/features.md` when they exist.
 3. Select the CHANGE.
    - If input starts with `CHANGE-00014`, `CHANGE 00014`, `C-00014`, `#14`, `#014`, `014`, or `14`, prefer the matching CHANGE record when it exists.
    - Otherwise, list CHANGE records with status `Proposed`, `Blocked`, or `Done`.
@@ -33,7 +34,12 @@ Use the text after this skill invocation to select the CHANGE record.
    - If two or more candidates exist, ask the user to choose one. Use `request_user_input` when available.
 4. Stop unless the selected CHANGE file exists.
 5. Read the selected CHANGE file fully.
-6. Read every linked ADR and FEATURE.
+6. Read linked TASK records and every linked ADR and FEATURE.
+   - Linked TASKs are defined only by the selected CHANGE file's canonical `## Tasks` section.
+   - Canonical TASK link format: `- [TASK-NNNNN](tasks/task-NNNNN-title-slug.md)`.
+   - Ignore TASK ids outside the `## Tasks` section for CHANGE-to-TASK linkage.
+   - If `.backtrail/tasks.md` lists tasks for the selected CHANGE that are missing from the CHANGE `## Tasks` section, report the mismatch as `Must Fix`.
+   - If the `## Tasks` section contains malformed links, duplicate TASK ids, missing TASK files, or TASK records whose `Change` field does not match the selected CHANGE, report as `Must Fix`.
    - If there are no linked ADR or FEATURE proceed without them.
    - If a linked ADR status is not `Accepted`, mark the gate mismatch as `Must Fix` unless the CHANGE explicitly documents why the link is historical or non-gating.
    - If a linked FEATURE status is not `Accepted` or `Implemented`, mark the gate mismatch as `Must Fix` unless the CHANGE explicitly documents why the link is historical or non-gating.
@@ -44,6 +50,7 @@ Use the text after this skill invocation to select the CHANGE record.
    - Do not assume implementation is complete from CHANGE status alone.
 8. Map requirements to implementation.
    - Extract required behavior/scope from the CHANGE.
+   - Extract task-level scope and acceptance criteria from linked TASKs when present.
    - Extract architectural constraints from linked ADRs.
    - Extract acceptance criteria from linked FEATUREs.
    - For each requirement, record `Satisfied`, `Partial`, `Missing`, or `Unclear` with file references when possible.
@@ -71,6 +78,7 @@ Then use this structure:
   - One to three sentences explaining highest-impact result
 - Traceability
   - CHANGE requirements: list each as `Satisfied`, `Partial`, `Missing`, or `Unclear`
+  - TASK validation: list each linked TASK and whether scope, acceptance criteria, and status match implementation evidence
   - ADR validation: list each linked ADR and whether implementation complies
   - FEATURE validation: list each linked FEATURE and whether acceptance criteria are met
 - Verification
@@ -110,7 +118,7 @@ For each finding include:
 ## Guardrails
 
 - Do not change implementation code, docs, statuses, configs, tests, or generated files.
-- Do not mark CHANGE, ADR, or FEATURE records as done/implemented/accepted/rejected.
+- Do not mark CHANGE, TASK, ADR, or FEATURE records as done/implemented/accepted/rejected.
 - Do not infer missing Backtrail records.
 - Do not approve scope drift. If implementation changes CHANGE scope, FEATURE criteria, or ADR decisions, require an updated Backtrail artifact before approval.
 - Do not request large rewrites unless the current shape creates concrete correctness, boundary, or maintenance risk.

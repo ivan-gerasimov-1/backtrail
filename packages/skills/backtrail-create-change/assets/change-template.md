@@ -17,6 +17,12 @@ Describe what is included and what is intentionally excluded.
 1. List concrete implementation steps.
 2. Keep decision rationale in ADRs, not here.
 
+## Tasks
+
+<!-- Delete this section if no TASK records are required. Otherwise add one link per TASK:
+- [TASK-NNNNN](tasks/task-NNNNN-title-slug.md)
+-->
+
 ## Verification
 
 Run:
