@@ -2,7 +2,7 @@
 
 | Status   | Date       | ADRs | Blocked By | Blocks |
 | -------- | ---------- | ---- | ---------- | ------ |
-| Proposed | 2026-05-09 | -    | -          | -      |
+| Done | 2026-05-09 | -    | -          | -      |
 
 ## Goal
 
@@ -25,10 +25,10 @@ Excludes adding new agent runtimes, changing model or reasoning defaults, changi
 
 ## Tasks
 
-- [TASK-00006](../tasks/task-00006-extract-shared-exec-runtime-config.md)
-- [TASK-00007](../tasks/task-00007-add-exec-implement-subcommand.md)
-- [TASK-00008](../tasks/task-00008-add-exec-create-subcommand.md)
-- [TASK-00009](../tasks/task-00009-wire-exec-subcommand-router.md)
+- [TASK-00006](tasks/task-00006-extract-shared-exec-runtime-config.md)
+- [TASK-00007](tasks/task-00007-add-exec-implement-subcommand.md)
+- [TASK-00008](tasks/task-00008-add-exec-create-subcommand.md)
+- [TASK-00009](tasks/task-00009-wire-exec-subcommand-router.md)
 
 ## Verification
 

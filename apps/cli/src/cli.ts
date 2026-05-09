@@ -1,7 +1,9 @@
 import { Command } from "commander";
 import { cwd } from "node:process";
 
-import { exec } from "./commands/exec";
+import { execCreate } from "./commands/execCreate";
+import { execImplement } from "./commands/execImplement";
+import { handleExecResult } from "./commands/execResult";
 import { init } from "./commands/init";
 
 export function cli() {
@@ -33,31 +35,62 @@ export function cli() {
       }
     });
 
-  command
-    .command("exec [promptParts...]")
+  let execCommand = command
+    .command("exec")
+    .description("Run explicit exec subcommands")
+    .showHelpAfterError();
+
+  execCommand
+    .command("implement [promptParts...]")
     .option("-c, --change <name>", "Backtrail change name")
     .option("-t, --task <name>", "Backtrail task name")
+    .option("-f, --feature <name>", "Backtrail feature name")
     .description(
-      "Run predefined PI Coding Agent flow. Optional flags: -c, --change <name>; -t, --task <name>.",
+      "Run implementation skill flow. Optional flags: -c, --change <name>; -t, --task <name>; -f, --feature <name>.",
     )
-    .action(async (promptParts: string[] | undefined, options: { change?: string; task?: string }) => {
-      console.log("Agent started to work.");
+    .action(
+      async (
+        promptParts: string[] | undefined,
+        options: { change?: string; task?: string; feature?: string },
+      ) => {
+        console.log("Agent started to work.");
 
-      let result = await exec({
-        cwd: cwd(),
-        changeName: options.change,
-        taskName: options.task,
-        promptParts: promptParts ?? [],
-      });
+        let result = await execImplement({
+          cwd: cwd(),
+          changeName: options.change,
+          taskName: options.task,
+          featureName: options.feature,
+          promptParts: promptParts ?? [],
+        });
 
-      for (let errorMessage of result.errors) {
-        console.error(`error ${errorMessage}`);
-      }
+        handleExecResult(result);
+      },
+    );
 
-      if (!result.success) {
-        process.exitCode = 1;
-      }
-    });
+  execCommand
+    .command("create [promptParts...]")
+    .option("-c, --change <name>", "Backtrail change name")
+    .option("-f, --feature <name>", "Backtrail feature name")
+    .description(
+      "Run Backtrail creation flow. Optional flags: -c, --change <name>; -f, --feature <name>.",
+    )
+    .action(
+      async (
+        promptParts: string[] | undefined,
+        options: { change?: string; feature?: string },
+      ) => {
+        console.log("Agent started to work.");
+
+        let result = await execCreate({
+          cwd: cwd(),
+          changeName: options.change,
+          featureName: options.feature,
+          promptParts: promptParts ?? [],
+        });
+
+        handleExecResult(result);
+      },
+    );
 
   return command;
 }

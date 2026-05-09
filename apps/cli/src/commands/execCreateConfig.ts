@@ -8,18 +8,18 @@ import {
 import { TExecOptions } from "./types";
 
 export { EXEC_BINARY, EXEC_MODEL };
-export const EXEC_SKILL = "/skill:backtrail-implement";
+export const EXEC_CREATE_SKILL = "/skill:backtrail-create";
 
-export function buildExecPrompt(options: TExecOptions) {
+export function buildExecCreatePrompt(options: TExecOptions) {
   return buildSharedExecPrompt({
     ...options,
-    skillPrompt: EXEC_SKILL,
+    skillPrompt: EXEC_CREATE_SKILL,
   });
 }
 
-export function buildExecArguments(options: TExecOptions) {
+export function buildExecCreateArguments(options: TExecOptions) {
   return buildSharedExecArguments({
     ...options,
-    skillPrompt: EXEC_SKILL,
+    skillPrompt: EXEC_CREATE_SKILL,
   } satisfies TExecPromptOptions);
 }

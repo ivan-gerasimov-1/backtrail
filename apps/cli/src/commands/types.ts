@@ -21,5 +21,10 @@ export type TExecOptions = {
   cwd: string;
   changeName?: string;
   taskName?: string;
+  featureName?: string;
   promptParts: string[];
+};
+
+export type TExecRuntimeOptions = TExecOptions & {
+  skillPrompt: string;
 };

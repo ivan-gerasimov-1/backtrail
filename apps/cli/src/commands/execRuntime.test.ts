@@ -4,7 +4,7 @@ import {
   buildExecArguments,
   buildExecPrompt,
   EXEC_BINARY,
-} from "./execConfig";
+} from "./execRuntimeConfig";
 import { runExec } from "./execRuntime";
 
 let mockSpawn = vi.hoisted(() => vi.fn());
@@ -103,6 +103,7 @@ describe("backtrail exec runtime", () => {
       changeName: "CHANGE-00002",
       taskName: "TASK-00001",
       promptParts: [],
+      skillPrompt: "/skill:backtrail-implement",
     });
 
     childProcess.emitClose(0, null);
@@ -112,10 +113,10 @@ describe("backtrail exec runtime", () => {
     expect(mockSpawn).toHaveBeenCalledWith(
       EXEC_BINARY,
       buildExecArguments({
-        cwd: "/project",
         changeName: "CHANGE-00002",
         taskName: "TASK-00001",
         promptParts: [],
+        skillPrompt: "/skill:backtrail-implement",
       }),
       {
         cwd: "/project",
@@ -136,6 +137,7 @@ describe("backtrail exec runtime", () => {
       changeName: "CHANGE-00002",
       taskName: "TASK-00001",
       promptParts: ["extra", "context"],
+      skillPrompt: "/skill:backtrail-implement",
     });
 
     childProcess.stdout.emitData("agent result");
@@ -157,11 +159,14 @@ describe("backtrail exec runtime", () => {
       changeName: "CHANGE-00002",
       taskName: "TASK-00001",
       promptParts: [],
+      skillPrompt: "/skill:backtrail-implement",
     });
 
-    childProcess.emitError(Object.assign(new Error("spawn pi ENOENT"), {
-      code: "ENOENT",
-    }));
+    childProcess.emitError(
+      Object.assign(new Error("spawn pi ENOENT"), {
+        code: "ENOENT",
+      }),
+    );
 
     let result = await resultPromise;
 
@@ -180,6 +185,7 @@ describe("backtrail exec runtime", () => {
       changeName: "CHANGE-00002",
       taskName: "TASK-00001",
       promptParts: [],
+      skillPrompt: "/skill:backtrail-implement",
     });
 
     childProcess.stderr.emitData("agent failed");
@@ -201,6 +207,7 @@ describe("backtrail exec runtime", () => {
       changeName: "CHANGE-00002",
       taskName: "TASK-00001",
       promptParts: [],
+      skillPrompt: "/skill:backtrail-implement",
     });
 
     childProcess.stderr.emitData(
@@ -218,22 +225,35 @@ describe("backtrail exec runtime", () => {
   it("builds prompt from change, task, and free-form text", () => {
     expect(
       buildExecPrompt({
-        cwd: "/project",
         changeName: "CHANGE-00002",
         taskName: "TASK-00001",
         promptParts: ["fix", "docs"],
+        skillPrompt: "/skill:backtrail-create",
       }),
     ).toBe(
-      "/skill:backtrail-implement change: CHANGE-00002 task: TASK-00001 fix docs",
+      "/skill:backtrail-create change: CHANGE-00002 task: TASK-00001 fix docs",
+    );
+  });
+
+  it("builds prompt from change, feature, and free-form text", () => {
+    expect(
+      buildExecPrompt({
+        changeName: "CHANGE-00003",
+        featureName: "FEATURE-00003",
+        promptParts: ["draft", "brief"],
+        skillPrompt: "/skill:backtrail-create",
+      }),
+    ).toBe(
+      "/skill:backtrail-create change: CHANGE-00003 feature: FEATURE-00003 draft brief",
     );
   });
 
   it("builds prompt without optional change or task", () => {
     expect(
       buildExecPrompt({
-        cwd: "/project",
         promptParts: ["fix", "docs"],
+        skillPrompt: "/skill:backtrail-create",
       }),
-    ).toBe("/skill:backtrail-implement fix docs");
+    ).toBe("/skill:backtrail-create fix docs");
   });
 });

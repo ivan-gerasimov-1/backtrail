@@ -2,14 +2,19 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cli } from "./cli";
 
 let mockInit = vi.hoisted(() => vi.fn());
-let mockExec = vi.hoisted(() => vi.fn());
+let mockExecImplement = vi.hoisted(() => vi.fn());
+let mockExecCreate = vi.hoisted(() => vi.fn());
 
 vi.mock("./commands/init", () => ({
   init: (...args: unknown[]) => mockInit(...args),
 }));
 
-vi.mock("./commands/exec", () => ({
-  exec: (...args: unknown[]) => mockExec(...args),
+vi.mock("./commands/execImplement", () => ({
+  execImplement: (...args: unknown[]) => mockExecImplement(...args),
+}));
+
+vi.mock("./commands/execCreate", () => ({
+  execCreate: (...args: unknown[]) => mockExecCreate(...args),
 }));
 
 describe("backtrail cli", () => {
@@ -21,8 +26,14 @@ describe("backtrail cli", () => {
       skipped: [".backtrail/tasks.md"],
       errors: [],
     });
-    mockExec.mockReset();
-    mockExec.mockResolvedValue({
+    mockExecImplement.mockReset();
+    mockExecImplement.mockResolvedValue({
+      success: true,
+      output: "agent result",
+      errors: [],
+    });
+    mockExecCreate.mockReset();
+    mockExecCreate.mockResolvedValue({
       success: true,
       output: "agent result",
       errors: [],
@@ -44,7 +55,7 @@ describe("backtrail cli", () => {
     );
   });
 
-  it("registers exec command", () => {
+  it("registers exec parent command", () => {
     let command = cli();
 
     expect(command.commands.map((subcommand) => subcommand.name())).toContain(
@@ -52,17 +63,54 @@ describe("backtrail cli", () => {
     );
   });
 
-  it("registers exec short options", () => {
+  it("registers exec implement and create commands", () => {
     let command = cli();
     let execCommand = command.commands.find(
       (subcommand) => subcommand.name() === "exec",
     );
 
-    expect(execCommand?.options.map((option) => option.flags)).toContain(
+    expect(execCommand?.commands.map((subcommand) => subcommand.name())).toContain(
+      "implement",
+    );
+    expect(execCommand?.commands.map((subcommand) => subcommand.name())).toContain(
+      "create",
+    );
+  });
+
+  it("registers exec implement short options", () => {
+    let command = cli();
+    let execCommand = command.commands.find(
+      (subcommand) => subcommand.name() === "exec",
+    );
+    let implementCommand = execCommand?.commands.find(
+      (subcommand) => subcommand.name() === "implement",
+    );
+
+    expect(implementCommand?.options.map((option) => option.flags)).toContain(
       "-c, --change <name>",
     );
-    expect(execCommand?.options.map((option) => option.flags)).toContain(
+    expect(implementCommand?.options.map((option) => option.flags)).toContain(
       "-t, --task <name>",
+    );
+    expect(implementCommand?.options.map((option) => option.flags)).toContain(
+      "-f, --feature <name>",
+    );
+  });
+
+  it("registers exec create short options", () => {
+    let command = cli();
+    let execCommand = command.commands.find(
+      (subcommand) => subcommand.name() === "exec",
+    );
+    let createCommand = execCommand?.commands.find(
+      (subcommand) => subcommand.name() === "create",
+    );
+
+    expect(createCommand?.options.map((option) => option.flags)).toContain(
+      "-c, --change <name>",
+    );
+    expect(createCommand?.options.map((option) => option.flags)).toContain(
+      "-f, --feature <name>",
     );
   });
 
@@ -78,20 +126,67 @@ describe("backtrail cli", () => {
     expect(console.error).not.toHaveBeenCalled();
   });
 
-  it("invokes exec command from cli", async () => {
+  it("invokes exec implement command from cli", async () => {
     let command = cli();
 
     await command.parseAsync(
-      ["exec", "-c", "CHANGE-00002", "-t", "TASK-00001", "fix", "docs"],
+      ["exec", "implement", "-c", "CHANGE-00002", "-t", "TASK-00001", "fix", "docs"],
       { from: "user" },
     );
 
     expect(console.log).toHaveBeenCalledWith("Agent started to work.");
-    expect(mockExec).toHaveBeenCalledWith({
+    expect(mockExecImplement).toHaveBeenCalledWith({
       cwd: process.cwd(),
       changeName: "CHANGE-00002",
       taskName: "TASK-00001",
+      featureName: undefined,
       promptParts: ["fix", "docs"],
+    });
+    expect(console.error).not.toHaveBeenCalled();
+  });
+
+  it("invokes exec implement command with feature context from cli", async () => {
+    let command = cli();
+
+    await command.parseAsync(
+      [
+        "exec",
+        "implement",
+        "-c",
+        "CHANGE-00003",
+        "-f",
+        "FEATURE-00003",
+        "fix",
+        "docs",
+      ],
+      { from: "user" },
+    );
+
+    expect(console.log).toHaveBeenCalledWith("Agent started to work.");
+    expect(mockExecImplement).toHaveBeenCalledWith({
+      cwd: process.cwd(),
+      changeName: "CHANGE-00003",
+      taskName: undefined,
+      featureName: "FEATURE-00003",
+      promptParts: ["fix", "docs"],
+    });
+    expect(console.error).not.toHaveBeenCalled();
+  });
+
+  it("invokes exec create command from cli", async () => {
+    let command = cli();
+
+    await command.parseAsync(
+      ["exec", "create", "-c", "CHANGE-00003", "-f", "FEATURE-00003", "draft", "brief"],
+      { from: "user" },
+    );
+
+    expect(console.log).toHaveBeenCalledWith("Agent started to work.");
+    expect(mockExecCreate).toHaveBeenCalledWith({
+      cwd: process.cwd(),
+      changeName: "CHANGE-00003",
+      featureName: "FEATURE-00003",
+      promptParts: ["draft", "brief"],
     });
     expect(console.error).not.toHaveBeenCalled();
   });
@@ -114,8 +209,8 @@ describe("backtrail cli", () => {
     expect(process.exitCode).toBe(1);
   });
 
-  it("sets exit code on exec failure", async () => {
-    mockExec.mockResolvedValue({
+  it("sets exit code on exec implement failure", async () => {
+    mockExecImplement.mockResolvedValue({
       success: false,
       output: "",
       errors: ["PI Coding Agent executable not found. Install `pi` and try again."],
@@ -124,7 +219,7 @@ describe("backtrail cli", () => {
     let command = cli();
 
     await command.parseAsync(
-      ["exec", "-c", "CHANGE-00002", "-t", "TASK-00001"],
+      ["exec", "implement", "-c", "CHANGE-00002", "-t", "TASK-00001"],
       { from: "user" },
     );
 
@@ -134,16 +229,50 @@ describe("backtrail cli", () => {
     expect(process.exitCode).toBe(1);
   });
 
-  it("allows exec without change and task options", async () => {
+  it("sets exit code on exec create failure", async () => {
+    mockExecCreate.mockResolvedValue({
+      success: false,
+      output: "",
+      errors: ["PI Coding Agent executable not found. Install `pi` and try again."],
+    });
+
     let command = cli();
 
-    await command.parseAsync(["exec", "fix"], { from: "user" });
+    await command.parseAsync(
+      ["exec", "create", "-c", "CHANGE-00003", "-f", "FEATURE-00003"],
+      { from: "user" },
+    );
 
-    expect(mockExec).toHaveBeenCalledWith({
+    expect(console.error).toHaveBeenCalledWith(
+      "error PI Coding Agent executable not found. Install `pi` and try again.",
+    );
+    expect(process.exitCode).toBe(1);
+  });
+
+  it("allows exec implement without change and task options", async () => {
+    let command = cli();
+
+    await command.parseAsync(["exec", "implement", "fix"], { from: "user" });
+
+    expect(mockExecImplement).toHaveBeenCalledWith({
       cwd: process.cwd(),
       changeName: undefined,
       taskName: undefined,
+      featureName: undefined,
       promptParts: ["fix"],
+    });
+  });
+
+  it("allows exec create without change and feature options", async () => {
+    let command = cli();
+
+    await command.parseAsync(["exec", "create", "draft"], { from: "user" });
+
+    expect(mockExecCreate).toHaveBeenCalledWith({
+      cwd: process.cwd(),
+      changeName: undefined,
+      featureName: undefined,
+      promptParts: ["draft"],
     });
   });
 });

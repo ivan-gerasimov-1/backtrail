@@ -1,0 +1,50 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import { execCreate } from "./execCreate";
+
+let mockRunExec = vi.hoisted(() => vi.fn());
+
+vi.mock("./execRuntime", () => ({
+  runExec: (...args: unknown[]) => mockRunExec(...args),
+}));
+
+describe("backtrail exec create command", () => {
+  beforeEach(() => {
+    mockRunExec.mockReset();
+    mockRunExec.mockResolvedValue({
+      success: true,
+      output: "agent result",
+      errors: [],
+    });
+  });
+
+  it("passes creation skill and selected context to shared runtime", async () => {
+    await execCreate({
+      cwd: "/project",
+      changeName: "CHANGE-00003",
+      featureName: "FEATURE-00003",
+      promptParts: ["draft", "brief"],
+    });
+
+    expect(mockRunExec).toHaveBeenCalledWith({
+      cwd: "/project",
+      changeName: "CHANGE-00003",
+      featureName: "FEATURE-00003",
+      promptParts: ["draft", "brief"],
+      skillPrompt: "/skill:backtrail-create",
+    });
+  });
+
+  it("passes prompt without optional change or feature context", async () => {
+    await execCreate({
+      cwd: "/project",
+      promptParts: ["draft", "brief"],
+    });
+
+    expect(mockRunExec).toHaveBeenCalledWith({
+      cwd: "/project",
+      promptParts: ["draft", "brief"],
+      skillPrompt: "/skill:backtrail-create",
+    });
+  });
+});

@@ -1,13 +1,13 @@
 import { spawn } from "node:child_process";
 
-import { buildExecArguments, EXEC_BINARY } from "./execConfig";
-import { IExecResult, TExecOptions } from "./types";
+import { buildExecArguments, EXEC_BINARY } from "./execRuntimeConfig";
+import { IExecResult, TExecRuntimeOptions } from "./types";
 
 type TSpawnError = Error & {
   code?: string;
 };
 
-export async function runExec(options: TExecOptions): Promise<IExecResult> {
+export async function runExec(options: TExecRuntimeOptions): Promise<IExecResult> {
   try {
     let childProcess = spawn(EXEC_BINARY, buildExecArguments(options), {
       cwd: options.cwd,
