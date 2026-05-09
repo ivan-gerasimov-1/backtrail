@@ -2,9 +2,9 @@
 
 import { cli } from "#/cli";
 
-function main() {
+async function main() {
   try {
-    cli().parse();
+    await cli().parseAsync();
   } catch (error) {
     let message = error instanceof Error ? error.message : "Unknown CLI error";
 
