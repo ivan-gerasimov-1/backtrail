@@ -1,8 +1,8 @@
 # TASK-00005: Finalize CLI init verification
 
-| Status  | Date       | Change       | Blocked By | Blocks |
-| ------- | ---------- | ------------ | ---------- | ------ |
-| Todo | 2026-05-06 | CHANGE-00001 | TASK-00004 | -      |
+| Status | Date       | Change       | Blocked By | Blocks |
+| ------ | ---------- | ------------ | ---------- | ------ |
+| Done   | 2026-05-06 | CHANGE-00001 | TASK-00004 | -      |
 
 ## Goal
 

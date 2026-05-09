@@ -1,8 +1,8 @@
 # CHANGE-00001: Implement CLI init command
 
-| Status   | Date       | ADRs | Blocked By | Blocks |
-| -------- | ---------- | ---- | ---------- | ------ |
-| Proposed | 2026-05-06 | -    | -          | -      |
+| Status | Date       | ADRs | Blocked By | Blocks |
+| ------ | ---------- | ---- | ---------- | ------ |
+| Done   | 2026-05-06 | -    | -          | -      |
 
 ## Goal
 

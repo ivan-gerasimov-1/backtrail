@@ -1,8 +1,8 @@
 # FEATURE-00001: CLI init command
 
-| Status   | Date       |
-| -------- | ---------- |
-| Accepted | 2026-05-06 |
+| Status      | Date       |
+| ----------- | ---------- |
+| Implemented | 2026-05-06 |
 
 ## Context
 
