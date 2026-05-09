@@ -1,6 +1,6 @@
 {
   "name": "@backtrail/skills",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Agent skills for ADR-backed planning and implementation workflows",
   "author": "Ivan Gerasimov",
   "license": "MIT",
