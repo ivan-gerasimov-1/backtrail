@@ -74,11 +74,12 @@ Use the text after this skill invocation to select the CHANGE record.
    - Implement the CHANGE and run its verification.
    - If verification passes, update the CHANGE file and `.backtrail/changes.md` status to `Done`.
    - If verification fails, leave status unchanged and report failures.
-11. If the CHANGE reaches `Done`, read each CHANGE listed in `Blocks`.
+11. When TASK or CHANGE implementation reaches `Done`, propose a commit message for the finished work based on finished scope
+12. If the CHANGE reaches `Done`, read each CHANGE listed in `Blocks`.
    - If the blocked CHANGE is missing, report the missing link and continue without inventing a record.
    - If every CHANGE listed in that record's `Blocked By` field is `Done`, update that CHANGE file and `.backtrail/changes.md` status from `Blocked` to `Proposed`.
    - If any blocker is not `Done`, leave the dependent CHANGE as `Blocked` and report remaining blockers.
-12. If the CHANGE reaches `Done` and implements linked FEATUREs, update those FEATURE files and `.backtrail/features.md` status to `Implemented`.
+13. If the CHANGE reaches `Done` and implements linked FEATUREs, update those FEATURE files and `.backtrail/features.md` status to `Implemented`.
 
 ## Question UX
 
