@@ -46,6 +46,7 @@ Use the text after this skill invocation to select the CHANGE record.
    - If the CHANGE has no linked TASK records, implement CHANGE mode.
    - If every linked TASK is `Done` or `Cancelled`, skip code changes and continue to CHANGE completion checks.
 9. TASK mode:
+   - Unless the user explicitly states otherwise, select and implement only one TASK per invocation.
    - Validate each linked TASK belongs to the selected CHANGE and does not expand CHANGE scope.
    - Treat TASK records with status `Cancelled` as excluded work. Stop if cancelled work is required for CHANGE acceptance.
    - Unblock TASK records before selection when every TASK listed in `Blocked By` is `Done`; update each unblocked TASK file and `.backtrail/tasks.md` from `Blocked` to `Todo`.
@@ -65,20 +66,24 @@ Use the text after this skill invocation to select the CHANGE record.
    - If verification fails, leave selected TASK as `In Progress` and report failures.
    - After a TASK reaches `Done`, if every linked TASK for the CHANGE is `Done` or `Cancelled`, run CHANGE-level verification when specified. If it passes, update the CHANGE file and `.backtrail/changes.md` status to `Done`; otherwise leave CHANGE status unchanged and report failures.
 10. CHANGE mode:
-   - Summarize decision context, change scope, implementation steps, verification, dependencies, and rollback. For standalone CHANGE records, state that no ADR or FEATURE gate applies.
-   - Prepare step-by-step CHANGE implementation plan.
-   - Ask whether to implement the selected CHANGE now.
-     - Use Yes/No buttons when `request_user_input` is available.
-     - `Yes`: continue to implementation.
-     - `No`: stop without changing files.
-   - Implement the CHANGE and run its verification.
-   - If verification passes, update the CHANGE file and `.backtrail/changes.md` status to `Done`.
-   - If verification fails, leave status unchanged and report failures.
+
+- Summarize decision context, change scope, implementation steps, verification, dependencies, and rollback. For standalone CHANGE records, state that no ADR or FEATURE gate applies.
+- Prepare step-by-step CHANGE implementation plan.
+- Ask whether to implement the selected CHANGE now.
+  - Use Yes/No buttons when `request_user_input` is available.
+  - `Yes`: continue to implementation.
+  - `No`: stop without changing files.
+- Implement the CHANGE and run its verification.
+- If verification passes, update the CHANGE file and `.backtrail/changes.md` status to `Done`.
+- If verification fails, leave status unchanged and report failures.
+
 11. When TASK or CHANGE implementation reaches `Done`, propose a commit message for the finished work based on finished scope
 12. If the CHANGE reaches `Done`, read each CHANGE listed in `Blocks`.
-   - If the blocked CHANGE is missing, report the missing link and continue without inventing a record.
-   - If every CHANGE listed in that record's `Blocked By` field is `Done`, update that CHANGE file and `.backtrail/changes.md` status from `Blocked` to `Proposed`.
-   - If any blocker is not `Done`, leave the dependent CHANGE as `Blocked` and report remaining blockers.
+
+- If the blocked CHANGE is missing, report the missing link and continue without inventing a record.
+- If every CHANGE listed in that record's `Blocked By` field is `Done`, update that CHANGE file and `.backtrail/changes.md` status from `Blocked` to `Proposed`.
+- If any blocker is not `Done`, leave the dependent CHANGE as `Blocked` and report remaining blockers.
+
 13. If the CHANGE reaches `Done` and implements linked FEATUREs, update those FEATURE files and `.backtrail/features.md` status to `Implemented`.
 
 ## Question UX
@@ -95,4 +100,5 @@ Use the text after this skill invocation to select the CHANGE record.
 - If implementation needs to change a FEATURE scope, acceptance criteria, or status gate, stop and ask for a new or updated FEATURE.
 - If implementation needs a different scope than the CHANGE describes, stop and ask whether to update the CHANGE first.
 - In TASK mode, do not implement outside selected TASK scope.
+- In TASK mode, default to one TASK at a time. Do not batch multiple TASKs unless explicitly requested.
 - Do not mark a CHANGE `Done` until every linked TASK is `Done` or `Cancelled` and CHANGE-level verification passes when specified.
