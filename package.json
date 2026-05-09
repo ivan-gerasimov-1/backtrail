@@ -10,6 +10,7 @@
     "README.md"
   ],
   "scripts": {
+    "build": "pnpm -r --if-present build",
     "deps:update": "ncu --upgrade --enginesNode --format group --reject @types/node"
   },
   "devDependencies": {
