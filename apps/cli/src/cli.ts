@@ -3,6 +3,7 @@ import { cwd } from "node:process";
 
 import { execCreate } from "./commands/execCreate";
 import { execImplement } from "./commands/execImplement";
+import { execReview } from "./commands/execReview";
 import { handleExecResult } from "./commands/execResult";
 import { init } from "./commands/init";
 
@@ -87,6 +88,35 @@ export function cli() {
         let result = await execCreate({
           cwd: cwd(),
           changeName: options.change,
+          featureName: options.feature,
+          ...(options.force ? { force: true } : {}),
+          promptParts: promptParts ?? [],
+        });
+
+        handleExecResult(result);
+      },
+    );
+
+  execCommand
+    .command("review [promptParts...]")
+    .option("-c, --change <name>", "Backtrail change name")
+    .option("-t, --task <name>", "Backtrail task name")
+    .option("-F, --feature <name>", "Backtrail feature name")
+    .option("-f, --force", "Avoid clarification questions and proceed with available context")
+    .description(
+      "Run review skill flow. Optional flags: -c, --change <name>; -t, --task <name>; -F, --feature <name>; -f, --force.",
+    )
+    .action(
+      async (
+        promptParts: string[] | undefined,
+        options: { change?: string; task?: string; feature?: string; force?: boolean },
+      ) => {
+        console.log("Agent started to work.");
+
+        let result = await execReview({
+          cwd: cwd(),
+          changeName: options.change,
+          taskName: options.task,
           featureName: options.feature,
           ...(options.force ? { force: true } : {}),
           promptParts: promptParts ?? [],

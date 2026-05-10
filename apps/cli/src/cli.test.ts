@@ -4,6 +4,7 @@ import { cli } from "./cli";
 let mockInit = vi.hoisted(() => vi.fn());
 let mockExecImplement = vi.hoisted(() => vi.fn());
 let mockExecCreate = vi.hoisted(() => vi.fn());
+let mockExecReview = vi.hoisted(() => vi.fn());
 
 vi.mock("./commands/init", () => ({
   init: (...args: unknown[]) => mockInit(...args),
@@ -15,6 +16,10 @@ vi.mock("./commands/execImplement", () => ({
 
 vi.mock("./commands/execCreate", () => ({
   execCreate: (...args: unknown[]) => mockExecCreate(...args),
+}));
+
+vi.mock("./commands/execReview", () => ({
+  execReview: (...args: unknown[]) => mockExecReview(...args),
 }));
 
 describe("backtrail cli", () => {
@@ -34,6 +39,12 @@ describe("backtrail cli", () => {
     });
     mockExecCreate.mockReset();
     mockExecCreate.mockResolvedValue({
+      success: true,
+      output: "agent result",
+      errors: [],
+    });
+    mockExecReview.mockReset();
+    mockExecReview.mockResolvedValue({
       success: true,
       output: "agent result",
       errors: [],
@@ -63,7 +74,7 @@ describe("backtrail cli", () => {
     );
   });
 
-  it("registers exec implement and create commands", () => {
+  it("registers exec implement, create, and review commands", () => {
     let command = cli();
     let execCommand = command.commands.find(
       (subcommand) => subcommand.name() === "exec",
@@ -74,6 +85,9 @@ describe("backtrail cli", () => {
     );
     expect(execCommand?.commands.map((subcommand) => subcommand.name())).toContain(
       "create",
+    );
+    expect(execCommand?.commands.map((subcommand) => subcommand.name())).toContain(
+      "review",
     );
   });
 
@@ -116,6 +130,29 @@ describe("backtrail cli", () => {
       "-F, --feature <name>",
     );
     expect(createCommand?.options.map((option) => option.flags)).toContain(
+      "-f, --force",
+    );
+  });
+
+  it("registers exec review short options", () => {
+    let command = cli();
+    let execCommand = command.commands.find(
+      (subcommand) => subcommand.name() === "exec",
+    );
+    let reviewCommand = execCommand?.commands.find(
+      (subcommand) => subcommand.name() === "review",
+    );
+
+    expect(reviewCommand?.options.map((option) => option.flags)).toContain(
+      "-c, --change <name>",
+    );
+    expect(reviewCommand?.options.map((option) => option.flags)).toContain(
+      "-t, --task <name>",
+    );
+    expect(reviewCommand?.options.map((option) => option.flags)).toContain(
+      "-F, --feature <name>",
+    );
+    expect(reviewCommand?.options.map((option) => option.flags)).toContain(
       "-f, --force",
     );
   });
@@ -199,6 +236,38 @@ describe("backtrail cli", () => {
     expect(console.error).not.toHaveBeenCalled();
   });
 
+  it("invokes exec review command from cli", async () => {
+    let command = cli();
+
+    await command.parseAsync(
+      [
+        "exec",
+        "review",
+        "-c",
+        "CHANGE-00006",
+        "-t",
+        "TASK-00010",
+        "-F",
+        "FEATURE-00006",
+        "--force",
+        "review",
+        "implementation",
+      ],
+      { from: "user" },
+    );
+
+    expect(console.log).toHaveBeenCalledWith("Agent started to work.");
+    expect(mockExecReview).toHaveBeenCalledWith({
+      cwd: process.cwd(),
+      changeName: "CHANGE-00006",
+      taskName: "TASK-00010",
+      featureName: "FEATURE-00006",
+      force: true,
+      promptParts: ["review", "implementation"],
+    });
+    expect(console.error).not.toHaveBeenCalled();
+  });
+
   it("sets exit code on init failure", async () => {
     mockInit.mockResolvedValue({
       success: false,
@@ -257,6 +326,26 @@ describe("backtrail cli", () => {
     expect(process.exitCode).toBe(1);
   });
 
+  it("sets exit code on exec review failure", async () => {
+    mockExecReview.mockResolvedValue({
+      success: false,
+      output: "",
+      errors: ["PI Coding Agent executable not found. Install `pi` and try again."],
+    });
+
+    let command = cli();
+
+    await command.parseAsync(
+      ["exec", "review", "-c", "CHANGE-00006", "-t", "TASK-00010"],
+      { from: "user" },
+    );
+
+    expect(console.error).toHaveBeenCalledWith(
+      "error PI Coding Agent executable not found. Install `pi` and try again.",
+    );
+    expect(process.exitCode).toBe(1);
+  });
+
   it("allows exec implement without change and task options", async () => {
     let command = cli();
 
@@ -281,6 +370,20 @@ describe("backtrail cli", () => {
       changeName: undefined,
       featureName: undefined,
       promptParts: ["draft"],
+    });
+  });
+
+  it("allows exec review without change, task, or feature options", async () => {
+    let command = cli();
+
+    await command.parseAsync(["exec", "review", "review"], { from: "user" });
+
+    expect(mockExecReview).toHaveBeenCalledWith({
+      cwd: process.cwd(),
+      changeName: undefined,
+      taskName: undefined,
+      featureName: undefined,
+      promptParts: ["review"],
     });
   });
 });

@@ -7,3 +7,4 @@
 | [FEATURE-00003](features/feature-00003-cli-exec-subcommands.md)            | Implemented | 2026-05-09 | CLI exec subcommands — route exec workflows through explicit implement and create subcommands.                                      |
 | [FEATURE-00004](features/feature-00004-exec-force-flag.md)                 | Accepted    | 2026-05-09 | Exec force flag — add `--force` / `-f` to exec commands so agents proceed without clarification questions.                          |
 | [FEATURE-00005](features/feature-00005-exec-subcommand-model-selection.md) | Implemented | 2026-05-09 | Exec subcommand model selection — use command-specific model and reasoning-effort defaults for create and implement exec workflows. |
+| [FEATURE-00006](features/feature-00006-exec-review-subcommand.md)          | Implemented  | 2026-05-10 | Exec review subcommand — run Backtrail review skill through exec with model 5.5 and low reasoning effort.                           |

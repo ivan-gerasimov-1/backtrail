@@ -7,3 +7,4 @@
 | [CHANGE-00003](changes/change-00003-implement-cli-exec-subcommands.md) | Done | 2026-05-09 | - | - | - | Implement CLI exec subcommands — route exec workflows through explicit implement and create subcommands. |
 | [CHANGE-00004](changes/change-00004-implement-exec-subcommand-model-selection.md) | Done | 2026-05-10 | - | - | - | Implement exec subcommand model selection — apply command-specific model and reasoning-effort defaults for exec create and implement. |
 | [CHANGE-00005](changes/change-00005-implement-exec-force-flag.md) | Done | 2026-05-10 | - | - | - | Implement exec force flag — add --force / -f to exec commands and include a force instruction in spawned agent prompts. |
+| [CHANGE-00006](changes/change-00006-implement-exec-review-subcommand.md) | Done | 2026-05-10 | - | - | - | Implement exec review subcommand — add `backtrail exec review` using the review skill with model 5.5 and low reasoning effort. |
