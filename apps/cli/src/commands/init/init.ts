@@ -1,5 +1,5 @@
 import { join } from "node:path";
-import { IInitResult, TInitOptions } from "./types";
+import { IInitResult, TInitOptions } from "../types";
 import { createDir } from "./initDir";
 import { createSubdirs } from "./initSubdirs";
 import { createIndexFiles } from "./initFiles";

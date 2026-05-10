@@ -1,7 +1,7 @@
 import { stat, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import { tryCreate } from "./fsUtils";
-import { TInitStepResult } from "./types";
+import { tryCreate } from "../fsUtils";
+import { TInitStepResult } from "../types";
 
 const EDefaultIndexFiles: Record<string, string> = {
   "adl.md":

@@ -1,6 +1,6 @@
 import { mkdir, stat } from "node:fs/promises";
-import { tryCreate } from "./fsUtils";
-import { TInitStepResult } from "./types";
+import { tryCreate } from "../fsUtils";
+import { TInitStepResult } from "../types";
 
 export async function createDir(
   backtrailDir: string,

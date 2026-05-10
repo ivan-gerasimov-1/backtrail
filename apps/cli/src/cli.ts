@@ -1,11 +1,11 @@
 import { Command } from "commander";
 import { cwd } from "node:process";
 
-import { execCreate } from "./commands/execCreate";
-import { execImplement } from "./commands/execImplement";
-import { execReview } from "./commands/execReview";
+import { execCreate } from "./commands/execCreate/execCreate";
+import { execImplement } from "./commands/execImplement/execImplement";
+import { execReview } from "./commands/execReview/execReview";
 import { handleExecResult } from "./commands/execResult";
-import { init } from "./commands/init";
+import { init } from "./commands/init/init";
 
 export function cli() {
   let command = new Command()

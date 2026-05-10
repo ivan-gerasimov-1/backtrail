@@ -3,8 +3,8 @@ import {
   buildExecPrompt as buildSharedExecPrompt,
   EXEC_BINARY,
   type TExecPromptOptions,
-} from "./execRuntimeConfig";
-import { TExecOptions, type TExecRuntimeOptions } from "./types";
+} from "../execRuntimeConfig";
+import { TExecOptions, type TExecRuntimeOptions } from "../types";
 
 export { EXEC_BINARY };
 export const EXEC_REVIEW_SKILL = "/skill:backtrail-review";

@@ -2,8 +2,8 @@ import {
   buildExecArguments as buildSharedExecArguments,
   buildExecPrompt as buildSharedExecPrompt,
   EXEC_BINARY,
-} from "./execRuntimeConfig";
-import { TExecOptions, type TExecRuntimeOptions } from "./types";
+} from "../execRuntimeConfig";
+import { TExecOptions, type TExecRuntimeOptions } from "../types";
 
 export { EXEC_BINARY };
 export const EXEC_CREATE_SKILL = "/skill:backtrail-create";

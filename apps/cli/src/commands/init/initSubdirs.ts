@@ -1,7 +1,7 @@
 import { mkdir, stat } from "node:fs/promises";
 import { join } from "node:path";
-import { tryCreate } from "./fsUtils";
-import { TInitStepResult } from "./types";
+import { tryCreate } from "../fsUtils";
+import { TInitStepResult } from "../types";
 
 const DEFAULT_DIRS = ["adrs", "changes", "features", "tasks"];
 

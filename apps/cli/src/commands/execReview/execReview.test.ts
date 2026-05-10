@@ -5,7 +5,7 @@ import { execReview } from "./execReview";
 
 let mockRunExec = vi.hoisted(() => vi.fn());
 
-vi.mock("./execRuntime", () => ({
+vi.mock("../execRuntime", () => ({
   runExec: (...args: unknown[]) => mockRunExec(...args),
 }));
 

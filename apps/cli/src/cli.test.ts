@@ -6,19 +6,19 @@ let mockExecImplement = vi.hoisted(() => vi.fn());
 let mockExecCreate = vi.hoisted(() => vi.fn());
 let mockExecReview = vi.hoisted(() => vi.fn());
 
-vi.mock("./commands/init", () => ({
+vi.mock("./commands/init/init", () => ({
   init: (...args: unknown[]) => mockInit(...args),
 }));
 
-vi.mock("./commands/execImplement", () => ({
+vi.mock("./commands/execImplement/execImplement", () => ({
   execImplement: (...args: unknown[]) => mockExecImplement(...args),
 }));
 
-vi.mock("./commands/execCreate", () => ({
+vi.mock("./commands/execCreate/execCreate", () => ({
   execCreate: (...args: unknown[]) => mockExecCreate(...args),
 }));
 
-vi.mock("./commands/execReview", () => ({
+vi.mock("./commands/execReview/execReview", () => ({
   execReview: (...args: unknown[]) => mockExecReview(...args),
 }));
 

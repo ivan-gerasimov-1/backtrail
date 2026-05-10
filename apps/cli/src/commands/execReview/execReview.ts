@@ -3,8 +3,8 @@ import {
   EXEC_REVIEW_REASONING_EFFORT,
   EXEC_REVIEW_SKILL,
 } from "./execReviewConfig";
-import { runExec } from "./execRuntime";
-import { TExecOptions } from "./types";
+import { runExec } from "../execRuntime";
+import { TExecOptions } from "../types";
 
 export async function execReview(options: TExecOptions) {
   return runExec({
