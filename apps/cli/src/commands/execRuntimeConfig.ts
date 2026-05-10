@@ -2,6 +2,9 @@ import { TExecRuntimeOptions } from "./types";
 
 export const EXEC_BINARY = "pi";
 
+export const EXEC_FORCE_PROMPT =
+  "Do not ask user questions. Proceed with available context, while preserving explicit safety and Backtrail skill guardrails.";
+
 export type TExecPromptOptions = Omit<
   TExecRuntimeOptions,
   "cwd" | "model" | "reasoningEffort"
@@ -22,6 +25,10 @@ export function buildExecPrompt(options: TExecPromptOptions) {
 
   if (options.featureName) {
     promptParts.push(`feature: ${options.featureName}`);
+  }
+
+  if (options.force) {
+    promptParts.push(EXEC_FORCE_PROMPT);
   }
 
   let extraPrompt = options.promptParts.join(" ").trim();

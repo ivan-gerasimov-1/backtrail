@@ -51,4 +51,21 @@ describe("backtrail exec create command", () => {
       reasoningEffort: "low",
     });
   });
+
+  it("passes force flag to shared runtime", async () => {
+    await execCreate({
+      cwd: "/project",
+      force: true,
+      promptParts: ["draft", "brief"],
+    });
+
+    expect(mockRunExec).toHaveBeenCalledWith({
+      cwd: "/project",
+      force: true,
+      promptParts: ["draft", "brief"],
+      skillPrompt: "/skill:backtrail-create",
+      model: "5.5",
+      reasoningEffort: "low",
+    });
+  });
 });

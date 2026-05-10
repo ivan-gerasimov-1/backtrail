@@ -44,14 +44,15 @@ export function cli() {
     .command("implement [promptParts...]")
     .option("-c, --change <name>", "Backtrail change name")
     .option("-t, --task <name>", "Backtrail task name")
-    .option("-f, --feature <name>", "Backtrail feature name")
+    .option("-F, --feature <name>", "Backtrail feature name")
+    .option("-f, --force", "Avoid clarification questions and proceed with available context")
     .description(
-      "Run implementation skill flow. Optional flags: -c, --change <name>; -t, --task <name>; -f, --feature <name>.",
+      "Run implementation skill flow. Optional flags: -c, --change <name>; -t, --task <name>; -F, --feature <name>; -f, --force.",
     )
     .action(
       async (
         promptParts: string[] | undefined,
-        options: { change?: string; task?: string; feature?: string },
+        options: { change?: string; task?: string; feature?: string; force?: boolean },
       ) => {
         console.log("Agent started to work.");
 
@@ -60,6 +61,7 @@ export function cli() {
           changeName: options.change,
           taskName: options.task,
           featureName: options.feature,
+          ...(options.force ? { force: true } : {}),
           promptParts: promptParts ?? [],
         });
 
@@ -70,14 +72,15 @@ export function cli() {
   execCommand
     .command("create [promptParts...]")
     .option("-c, --change <name>", "Backtrail change name")
-    .option("-f, --feature <name>", "Backtrail feature name")
+    .option("-F, --feature <name>", "Backtrail feature name")
+    .option("-f, --force", "Avoid clarification questions and proceed with available context")
     .description(
-      "Run Backtrail creation flow. Optional flags: -c, --change <name>; -f, --feature <name>.",
+      "Run Backtrail creation flow. Optional flags: -c, --change <name>; -F, --feature <name>; -f, --force.",
     )
     .action(
       async (
         promptParts: string[] | undefined,
-        options: { change?: string; feature?: string },
+        options: { change?: string; feature?: string; force?: boolean },
       ) => {
         console.log("Agent started to work.");
 
@@ -85,6 +88,7 @@ export function cli() {
           cwd: cwd(),
           changeName: options.change,
           featureName: options.feature,
+          ...(options.force ? { force: true } : {}),
           promptParts: promptParts ?? [],
         });
 

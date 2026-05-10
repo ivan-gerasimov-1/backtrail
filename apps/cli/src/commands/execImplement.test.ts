@@ -53,4 +53,21 @@ describe("backtrail exec implement command", () => {
       reasoningEffort: "medium",
     });
   });
+
+  it("passes force flag to shared runtime", async () => {
+    await execImplement({
+      cwd: "/project",
+      force: true,
+      promptParts: ["fix", "docs"],
+    });
+
+    expect(mockRunExec).toHaveBeenCalledWith({
+      cwd: "/project",
+      force: true,
+      promptParts: ["fix", "docs"],
+      skillPrompt: "/skill:backtrail-implement",
+      model: "5.4-mini",
+      reasoningEffort: "medium",
+    });
+  });
 });

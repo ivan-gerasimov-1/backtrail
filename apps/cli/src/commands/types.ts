@@ -22,6 +22,7 @@ export type TExecOptions = {
   changeName?: string;
   taskName?: string;
   featureName?: string;
+  force?: boolean;
   promptParts: string[];
 };
 

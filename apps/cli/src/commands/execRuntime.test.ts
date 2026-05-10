@@ -4,6 +4,7 @@ import {
   buildExecArguments,
   buildExecPrompt,
   EXEC_BINARY,
+  EXEC_FORCE_PROMPT,
 } from "./execRuntimeConfig";
 import { runExec } from "./execRuntime";
 
@@ -248,16 +249,17 @@ describe("backtrail exec runtime", () => {
     );
   });
 
-  it("builds prompt from change, feature, and free-form text", () => {
+  it("builds prompt from change, feature, force, and free-form text", () => {
     expect(
       buildExecPrompt({
         changeName: "CHANGE-00003",
         featureName: "FEATURE-00003",
+        force: true,
         promptParts: ["draft", "brief"],
         skillPrompt: "/skill:backtrail-create",
       }),
     ).toBe(
-      "/skill:backtrail-create change: CHANGE-00003 feature: FEATURE-00003 draft brief",
+      `/skill:backtrail-create change: CHANGE-00003 feature: FEATURE-00003 ${EXEC_FORCE_PROMPT} draft brief`,
     );
   });
 

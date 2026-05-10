@@ -93,7 +93,10 @@ describe("backtrail cli", () => {
       "-t, --task <name>",
     );
     expect(implementCommand?.options.map((option) => option.flags)).toContain(
-      "-f, --feature <name>",
+      "-F, --feature <name>",
+    );
+    expect(implementCommand?.options.map((option) => option.flags)).toContain(
+      "-f, --force",
     );
   });
 
@@ -110,7 +113,10 @@ describe("backtrail cli", () => {
       "-c, --change <name>",
     );
     expect(createCommand?.options.map((option) => option.flags)).toContain(
-      "-f, --feature <name>",
+      "-F, --feature <name>",
+    );
+    expect(createCommand?.options.map((option) => option.flags)).toContain(
+      "-f, --force",
     );
   });
 
@@ -130,7 +136,7 @@ describe("backtrail cli", () => {
     let command = cli();
 
     await command.parseAsync(
-      ["exec", "implement", "-c", "CHANGE-00002", "-t", "TASK-00001", "fix", "docs"],
+      ["exec", "implement", "-c", "CHANGE-00002", "-t", "TASK-00001", "-f", "fix", "docs"],
       { from: "user" },
     );
 
@@ -140,6 +146,7 @@ describe("backtrail cli", () => {
       changeName: "CHANGE-00002",
       taskName: "TASK-00001",
       featureName: undefined,
+      force: true,
       promptParts: ["fix", "docs"],
     });
     expect(console.error).not.toHaveBeenCalled();
@@ -154,7 +161,7 @@ describe("backtrail cli", () => {
         "implement",
         "-c",
         "CHANGE-00003",
-        "-f",
+        "-F",
         "FEATURE-00003",
         "fix",
         "docs",
@@ -177,7 +184,7 @@ describe("backtrail cli", () => {
     let command = cli();
 
     await command.parseAsync(
-      ["exec", "create", "-c", "CHANGE-00003", "-f", "FEATURE-00003", "draft", "brief"],
+      ["exec", "create", "-c", "CHANGE-00003", "-F", "FEATURE-00003", "--force", "draft", "brief"],
       { from: "user" },
     );
 
@@ -186,6 +193,7 @@ describe("backtrail cli", () => {
       cwd: process.cwd(),
       changeName: "CHANGE-00003",
       featureName: "FEATURE-00003",
+      force: true,
       promptParts: ["draft", "brief"],
     });
     expect(console.error).not.toHaveBeenCalled();
@@ -239,7 +247,7 @@ describe("backtrail cli", () => {
     let command = cli();
 
     await command.parseAsync(
-      ["exec", "create", "-c", "CHANGE-00003", "-f", "FEATURE-00003"],
+      ["exec", "create", "-c", "CHANGE-00003", "-F", "FEATURE-00003"],
       { from: "user" },
     );
 
