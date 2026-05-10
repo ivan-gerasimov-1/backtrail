@@ -1,7 +1,7 @@
 import { Command } from "commander";
 import { cwd } from "node:process";
 
-import { execCreate } from "./commands/execCreate/execCreate";
+import { create } from "./commands/create/create";
 import { execImplement } from "./commands/execImplement/execImplement";
 import { execReview } from "./commands/execReview/execReview";
 import { handleExecResult } from "./commands/execResult";
@@ -81,7 +81,7 @@ export function cli() {
       ) => {
         console.log("Agent started to work.");
 
-        let result = await execCreate({
+        let result = await create({
           cwd: cwd(),
           changeName: options.change,
           featureName: options.feature,

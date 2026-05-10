@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { execCreate } from "./execCreate";
+import { create } from "./create";
 
 let mockRunExec = vi.hoisted(() => vi.fn());
 
@@ -8,7 +8,7 @@ vi.mock("../execRuntime", () => ({
   runExec: (...args: unknown[]) => mockRunExec(...args),
 }));
 
-describe("backtrail exec create command", () => {
+describe("backtrail create command", () => {
   beforeEach(() => {
     mockRunExec.mockReset();
     mockRunExec.mockResolvedValue({
@@ -19,7 +19,7 @@ describe("backtrail exec create command", () => {
   });
 
   it("passes creation skill and selected context to shared runtime", async () => {
-    await execCreate({
+    await create({
       cwd: "/project",
       changeName: "CHANGE-00003",
       featureName: "FEATURE-00003",
@@ -38,7 +38,7 @@ describe("backtrail exec create command", () => {
   });
 
   it("passes prompt without optional change or feature context", async () => {
-    await execCreate({
+    await create({
       cwd: "/project",
       promptParts: ["draft", "brief"],
     });
@@ -53,7 +53,7 @@ describe("backtrail exec create command", () => {
   });
 
   it("passes force flag to shared runtime", async () => {
-    await execCreate({
+    await create({
       cwd: "/project",
       force: true,
       promptParts: ["draft", "brief"],

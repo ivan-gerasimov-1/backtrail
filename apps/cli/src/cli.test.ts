@@ -14,8 +14,8 @@ vi.mock("./commands/execImplement/execImplement", () => ({
   execImplement: (...args: unknown[]) => mockExecImplement(...args),
 }));
 
-vi.mock("./commands/execCreate/execCreate", () => ({
-  execCreate: (...args: unknown[]) => mockExecCreate(...args),
+vi.mock("./commands/create/create", () => ({
+  create: (...args: unknown[]) => mockExecCreate(...args),
 }));
 
 vi.mock("./commands/execReview/execReview", () => ({
