@@ -1,8 +1,8 @@
 # FEATURE-00005: Exec subcommand model selection
 
-| Status   | Date       |
-| -------- | ---------- |
-| Accepted | 2026-05-09 |
+| Status      | Date       |
+| ----------- | ---------- |
+| Implemented | 2026-05-09 |
 
 ## Context
 
