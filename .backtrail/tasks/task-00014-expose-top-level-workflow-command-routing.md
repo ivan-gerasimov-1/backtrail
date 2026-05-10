@@ -2,7 +2,7 @@
 
 | Status   | Date       | Change       | Blocked By | Blocks |
 | -------- | ---------- | ------------ | ---------- | ------ |
-| Todo     | 2026-05-10 | [CHANGE-00008](../changes/change-00008-implement-top-level-backtrail-workflow-commands.md) | - | [TASK-00015](task-00015-rename-create-command-module.md), [TASK-00016](task-00016-rename-implement-and-review-command-modules.md) |
+| Done | 2026-05-10 | [CHANGE-00008](../changes/change-00008-implement-top-level-backtrail-workflow-commands.md) | - | [TASK-00015](task-00015-rename-create-command-module.md), [TASK-00016](task-00016-rename-implement-and-review-command-modules.md) |
 
 ## Goal
 

@@ -11,7 +11,8 @@ export function cli() {
   let command = new Command()
     .name("backtrail")
     .description("CLI for Backtrail workspace setup")
-    .version("0.1.0");
+    .version("0.1.0")
+    .showHelpAfterError();
 
   command
     .command("init")
@@ -36,12 +37,7 @@ export function cli() {
       }
     });
 
-  let execCommand = command
-    .command("exec")
-    .description("Run explicit exec subcommands")
-    .showHelpAfterError();
-
-  execCommand
+  command
     .command("implement [promptParts...]")
     .option("-c, --change <name>", "Backtrail change name")
     .option("-t, --task <name>", "Backtrail task name")
@@ -70,7 +66,7 @@ export function cli() {
       },
     );
 
-  execCommand
+  command
     .command("create [promptParts...]")
     .option("-c, --change <name>", "Backtrail change name")
     .option("-F, --feature <name>", "Backtrail feature name")
@@ -97,7 +93,7 @@ export function cli() {
       },
     );
 
-  execCommand
+  command
     .command("review [promptParts...]")
     .option("-c, --change <name>", "Backtrail change name")
     .option("-t, --task <name>", "Backtrail task name")

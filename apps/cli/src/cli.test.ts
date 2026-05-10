@@ -66,37 +66,26 @@ describe("backtrail cli", () => {
     );
   });
 
-  it("registers exec parent command", () => {
+  it("registers top-level workflow commands", () => {
     let command = cli();
 
     expect(command.commands.map((subcommand) => subcommand.name())).toContain(
+      "create",
+    );
+    expect(command.commands.map((subcommand) => subcommand.name())).toContain(
+      "implement",
+    );
+    expect(command.commands.map((subcommand) => subcommand.name())).toContain(
+      "review",
+    );
+    expect(command.commands.map((subcommand) => subcommand.name())).not.toContain(
       "exec",
     );
   });
 
-  it("registers exec implement, create, and review commands", () => {
+  it("registers top-level implement short options", () => {
     let command = cli();
-    let execCommand = command.commands.find(
-      (subcommand) => subcommand.name() === "exec",
-    );
-
-    expect(execCommand?.commands.map((subcommand) => subcommand.name())).toContain(
-      "implement",
-    );
-    expect(execCommand?.commands.map((subcommand) => subcommand.name())).toContain(
-      "create",
-    );
-    expect(execCommand?.commands.map((subcommand) => subcommand.name())).toContain(
-      "review",
-    );
-  });
-
-  it("registers exec implement short options", () => {
-    let command = cli();
-    let execCommand = command.commands.find(
-      (subcommand) => subcommand.name() === "exec",
-    );
-    let implementCommand = execCommand?.commands.find(
+    let implementCommand = command.commands.find(
       (subcommand) => subcommand.name() === "implement",
     );
 
@@ -114,12 +103,9 @@ describe("backtrail cli", () => {
     );
   });
 
-  it("registers exec create short options", () => {
+  it("registers top-level create short options", () => {
     let command = cli();
-    let execCommand = command.commands.find(
-      (subcommand) => subcommand.name() === "exec",
-    );
-    let createCommand = execCommand?.commands.find(
+    let createCommand = command.commands.find(
       (subcommand) => subcommand.name() === "create",
     );
 
@@ -134,12 +120,9 @@ describe("backtrail cli", () => {
     );
   });
 
-  it("registers exec review short options", () => {
+  it("registers top-level review short options", () => {
     let command = cli();
-    let execCommand = command.commands.find(
-      (subcommand) => subcommand.name() === "exec",
-    );
-    let reviewCommand = execCommand?.commands.find(
+    let reviewCommand = command.commands.find(
       (subcommand) => subcommand.name() === "review",
     );
 
@@ -169,11 +152,11 @@ describe("backtrail cli", () => {
     expect(console.error).not.toHaveBeenCalled();
   });
 
-  it("invokes exec implement command from cli", async () => {
+  it("invokes top-level implement command from cli", async () => {
     let command = cli();
 
     await command.parseAsync(
-      ["exec", "implement", "-c", "CHANGE-00002", "-t", "TASK-00001", "-f", "fix", "docs"],
+      ["implement", "-c", "CHANGE-00002", "-t", "TASK-00001", "-f", "fix", "docs"],
       { from: "user" },
     );
 
@@ -189,12 +172,11 @@ describe("backtrail cli", () => {
     expect(console.error).not.toHaveBeenCalled();
   });
 
-  it("invokes exec implement command with feature context from cli", async () => {
+  it("invokes top-level implement command with feature context from cli", async () => {
     let command = cli();
 
     await command.parseAsync(
       [
-        "exec",
         "implement",
         "-c",
         "CHANGE-00003",
@@ -217,11 +199,11 @@ describe("backtrail cli", () => {
     expect(console.error).not.toHaveBeenCalled();
   });
 
-  it("invokes exec create command from cli", async () => {
+  it("invokes top-level create command from cli", async () => {
     let command = cli();
 
     await command.parseAsync(
-      ["exec", "create", "-c", "CHANGE-00003", "-F", "FEATURE-00003", "--force", "draft", "brief"],
+      ["create", "-c", "CHANGE-00003", "-F", "FEATURE-00003", "--force", "draft", "brief"],
       { from: "user" },
     );
 
@@ -236,12 +218,11 @@ describe("backtrail cli", () => {
     expect(console.error).not.toHaveBeenCalled();
   });
 
-  it("invokes exec review command from cli", async () => {
+  it("invokes top-level review command from cli", async () => {
     let command = cli();
 
     await command.parseAsync(
       [
-        "exec",
         "review",
         "-c",
         "CHANGE-00006",
@@ -286,7 +267,7 @@ describe("backtrail cli", () => {
     expect(process.exitCode).toBe(1);
   });
 
-  it("sets exit code on exec implement failure", async () => {
+  it("sets exit code on top-level implement failure", async () => {
     mockExecImplement.mockResolvedValue({
       success: false,
       output: "",
@@ -295,10 +276,9 @@ describe("backtrail cli", () => {
 
     let command = cli();
 
-    await command.parseAsync(
-      ["exec", "implement", "-c", "CHANGE-00002", "-t", "TASK-00001"],
-      { from: "user" },
-    );
+    await command.parseAsync(["implement", "-c", "CHANGE-00002", "-t", "TASK-00001"], {
+      from: "user",
+    });
 
     expect(console.error).toHaveBeenCalledWith(
       "error PI Coding Agent executable not found. Install `pi` and try again.",
@@ -306,7 +286,7 @@ describe("backtrail cli", () => {
     expect(process.exitCode).toBe(1);
   });
 
-  it("sets exit code on exec create failure", async () => {
+  it("sets exit code on top-level create failure", async () => {
     mockExecCreate.mockResolvedValue({
       success: false,
       output: "",
@@ -315,10 +295,9 @@ describe("backtrail cli", () => {
 
     let command = cli();
 
-    await command.parseAsync(
-      ["exec", "create", "-c", "CHANGE-00003", "-F", "FEATURE-00003"],
-      { from: "user" },
-    );
+    await command.parseAsync(["create", "-c", "CHANGE-00003", "-F", "FEATURE-00003"], {
+      from: "user",
+    });
 
     expect(console.error).toHaveBeenCalledWith(
       "error PI Coding Agent executable not found. Install `pi` and try again.",
@@ -326,7 +305,7 @@ describe("backtrail cli", () => {
     expect(process.exitCode).toBe(1);
   });
 
-  it("sets exit code on exec review failure", async () => {
+  it("sets exit code on top-level review failure", async () => {
     mockExecReview.mockResolvedValue({
       success: false,
       output: "",
@@ -335,10 +314,9 @@ describe("backtrail cli", () => {
 
     let command = cli();
 
-    await command.parseAsync(
-      ["exec", "review", "-c", "CHANGE-00006", "-t", "TASK-00010"],
-      { from: "user" },
-    );
+    await command.parseAsync(["review", "-c", "CHANGE-00006", "-t", "TASK-00010"], {
+      from: "user",
+    });
 
     expect(console.error).toHaveBeenCalledWith(
       "error PI Coding Agent executable not found. Install `pi` and try again.",
@@ -346,10 +324,10 @@ describe("backtrail cli", () => {
     expect(process.exitCode).toBe(1);
   });
 
-  it("allows exec implement without change and task options", async () => {
+  it("allows top-level implement without change and task options", async () => {
     let command = cli();
 
-    await command.parseAsync(["exec", "implement", "fix"], { from: "user" });
+    await command.parseAsync(["implement", "fix"], { from: "user" });
 
     expect(mockExecImplement).toHaveBeenCalledWith({
       cwd: process.cwd(),
@@ -360,10 +338,10 @@ describe("backtrail cli", () => {
     });
   });
 
-  it("allows exec create without change and feature options", async () => {
+  it("allows top-level create without change and feature options", async () => {
     let command = cli();
 
-    await command.parseAsync(["exec", "create", "draft"], { from: "user" });
+    await command.parseAsync(["create", "draft"], { from: "user" });
 
     expect(mockExecCreate).toHaveBeenCalledWith({
       cwd: process.cwd(),
@@ -373,10 +351,10 @@ describe("backtrail cli", () => {
     });
   });
 
-  it("allows exec review without change, task, or feature options", async () => {
+  it("allows top-level review without change, task, or feature options", async () => {
     let command = cli();
 
-    await command.parseAsync(["exec", "review", "review"], { from: "user" });
+    await command.parseAsync(["review", "review"], { from: "user" });
 
     expect(mockExecReview).toHaveBeenCalledWith({
       cwd: process.cwd(),
