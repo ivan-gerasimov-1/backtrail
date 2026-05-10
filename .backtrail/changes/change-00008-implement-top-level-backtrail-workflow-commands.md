@@ -2,7 +2,7 @@
 
 | Status   | Date       | ADRs | Blocked By | Blocks |
 | -------- | ---------- | ---- | ---------- | ------ |
-| Proposed | 2026-05-10 | [ADR-00002](../adrs/adr-00002-top-level-backtrail-workflow-commands.md) | - | - |
+| Done | 2026-05-10 | [ADR-00002](../adrs/adr-00002-top-level-backtrail-workflow-commands.md) | - | - |
 
 ## Goal
 
