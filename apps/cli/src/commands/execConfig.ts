@@ -2,13 +2,13 @@ import {
   buildExecArguments as buildSharedExecArguments,
   buildExecPrompt as buildSharedExecPrompt,
   EXEC_BINARY,
-  EXEC_MODEL,
-  type TExecPromptOptions,
 } from "./execRuntimeConfig";
-import { TExecOptions } from "./types";
+import { TExecOptions, type TExecRuntimeOptions } from "./types";
 
-export { EXEC_BINARY, EXEC_MODEL };
+export { EXEC_BINARY };
 export const EXEC_SKILL = "/skill:backtrail-implement";
+export const EXEC_MODEL = "5.4-mini";
+export const EXEC_REASONING_EFFORT = "medium";
 
 export function buildExecPrompt(options: TExecOptions) {
   return buildSharedExecPrompt({
@@ -21,5 +21,7 @@ export function buildExecArguments(options: TExecOptions) {
   return buildSharedExecArguments({
     ...options,
     skillPrompt: EXEC_SKILL,
-  } satisfies TExecPromptOptions);
+    model: EXEC_MODEL,
+    reasoningEffort: EXEC_REASONING_EFFORT,
+  } satisfies TExecRuntimeOptions);
 }

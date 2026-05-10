@@ -1,9 +1,11 @@
-import { TExecOptions } from "./types";
+import { TExecRuntimeOptions } from "./types";
 
 export const EXEC_BINARY = "pi";
-export const EXEC_MODEL = "openai-codex/gpt-5.4-mini:medium";
 
-export type TExecPromptOptions = Omit<TExecOptions, "cwd"> & {
+export type TExecPromptOptions = Omit<
+  TExecRuntimeOptions,
+  "cwd" | "model" | "reasoningEffort"
+> & {
   skillPrompt: string;
 };
 
@@ -31,6 +33,15 @@ export function buildExecPrompt(options: TExecPromptOptions) {
   return promptParts.join(" ");
 }
 
-export function buildExecArguments(options: TExecPromptOptions) {
-  return ["--print", "--model", EXEC_MODEL, buildExecPrompt(options)];
+export function buildExecArguments(options: TExecRuntimeOptions) {
+  return [
+    "--print",
+    "--provider",
+    "openai-codex",
+    "--model",
+    `gpt-${options.model}`,
+    "--thinking",
+    options.reasoningEffort,
+    buildExecPrompt(options),
+  ];
 }

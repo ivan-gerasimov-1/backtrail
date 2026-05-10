@@ -104,6 +104,8 @@ describe("backtrail exec runtime", () => {
       taskName: "TASK-00001",
       promptParts: [],
       skillPrompt: "/skill:backtrail-implement",
+      model: "5.4-mini",
+      reasoningEffort: "medium",
     });
 
     childProcess.emitClose(0, null);
@@ -113,10 +115,13 @@ describe("backtrail exec runtime", () => {
     expect(mockSpawn).toHaveBeenCalledWith(
       EXEC_BINARY,
       buildExecArguments({
+        cwd: "/project",
         changeName: "CHANGE-00002",
         taskName: "TASK-00001",
         promptParts: [],
         skillPrompt: "/skill:backtrail-implement",
+        model: "5.4-mini",
+        reasoningEffort: "medium",
       }),
       {
         cwd: "/project",
@@ -138,6 +143,8 @@ describe("backtrail exec runtime", () => {
       taskName: "TASK-00001",
       promptParts: ["extra", "context"],
       skillPrompt: "/skill:backtrail-implement",
+      model: "5.4-mini",
+      reasoningEffort: "medium",
     });
 
     childProcess.stdout.emitData("agent result");
@@ -160,6 +167,8 @@ describe("backtrail exec runtime", () => {
       taskName: "TASK-00001",
       promptParts: [],
       skillPrompt: "/skill:backtrail-implement",
+      model: "5.4-mini",
+      reasoningEffort: "medium",
     });
 
     childProcess.emitError(
@@ -186,6 +195,8 @@ describe("backtrail exec runtime", () => {
       taskName: "TASK-00001",
       promptParts: [],
       skillPrompt: "/skill:backtrail-implement",
+      model: "5.4-mini",
+      reasoningEffort: "medium",
     });
 
     childProcess.stderr.emitData("agent failed");
@@ -208,6 +219,8 @@ describe("backtrail exec runtime", () => {
       taskName: "TASK-00001",
       promptParts: [],
       skillPrompt: "/skill:backtrail-implement",
+      model: "5.4-mini",
+      reasoningEffort: "medium",
     });
 
     childProcess.stderr.emitData(

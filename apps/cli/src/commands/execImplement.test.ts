@@ -34,6 +34,8 @@ describe("backtrail exec implement command", () => {
       featureName: "FEATURE-00003",
       promptParts: ["fix", "docs"],
       skillPrompt: "/skill:backtrail-implement",
+      model: "5.4-mini",
+      reasoningEffort: "medium",
     });
   });
 
@@ -47,6 +49,8 @@ describe("backtrail exec implement command", () => {
       cwd: "/project",
       promptParts: ["fix", "docs"],
       skillPrompt: "/skill:backtrail-implement",
+      model: "5.4-mini",
+      reasoningEffort: "medium",
     });
   });
 });

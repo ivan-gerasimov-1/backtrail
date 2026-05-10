@@ -27,4 +27,6 @@ export type TExecOptions = {
 
 export type TExecRuntimeOptions = TExecOptions & {
   skillPrompt: string;
+  model: string;
+  reasoningEffort: string;
 };

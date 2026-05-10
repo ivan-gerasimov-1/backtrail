@@ -32,6 +32,8 @@ describe("backtrail exec create command", () => {
       featureName: "FEATURE-00003",
       promptParts: ["draft", "brief"],
       skillPrompt: "/skill:backtrail-create",
+      model: "5.5",
+      reasoningEffort: "low",
     });
   });
 
@@ -45,6 +47,8 @@ describe("backtrail exec create command", () => {
       cwd: "/project",
       promptParts: ["draft", "brief"],
       skillPrompt: "/skill:backtrail-create",
+      model: "5.5",
+      reasoningEffort: "low",
     });
   });
 });
