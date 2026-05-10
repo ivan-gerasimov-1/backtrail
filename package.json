@@ -10,6 +10,7 @@
     "README.md"
   ],
   "scripts": {
+    "typecheck": "pnpm -r --if-present typecheck",
     "build": "pnpm -r --if-present build",
     "test": "pnpm -r --if-present test",
     "deps:update": "ncu --upgrade --enginesNode --format group --reject @types/node"

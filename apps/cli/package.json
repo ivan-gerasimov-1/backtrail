@@ -21,10 +21,10 @@
     "#/*": "./src/*.ts"
   },
   "scripts": {
-    "prebuild": "pnpm build:typecheck",
+    "prebuild": "pnpm typecheck",
     "build": "tsdown",
     "build:watch": "pnpm build --watch",
-    "build:typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "dev": "concurrently --kill-others-on-fail --names build,types \"pnpm build:watch\" \"pnpm build:typecheck --watch --preserveWatchOutput\"",
     "start": "pnpm start:dev",
     "start:dev": "node --watch dist/main.js",
