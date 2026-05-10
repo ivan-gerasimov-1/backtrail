@@ -2,8 +2,8 @@ import { Command } from "commander";
 import { cwd } from "node:process";
 
 import { create } from "./commands/create/create";
-import { execImplement } from "./commands/execImplement/execImplement";
-import { execReview } from "./commands/execReview/execReview";
+import { implement } from "./commands/implement/implement";
+import { review } from "./commands/review/review";
 import { handleExecResult } from "./commands/execResult";
 import { init } from "./commands/init/init";
 
@@ -53,7 +53,7 @@ export function cli() {
       ) => {
         console.log("Agent started to work.");
 
-        let result = await execImplement({
+        let result = await implement({
           cwd: cwd(),
           changeName: options.change,
           taskName: options.task,
@@ -109,7 +109,7 @@ export function cli() {
       ) => {
         console.log("Agent started to work.");
 
-        let result = await execReview({
+        let result = await review({
           cwd: cwd(),
           changeName: options.change,
           taskName: options.task,

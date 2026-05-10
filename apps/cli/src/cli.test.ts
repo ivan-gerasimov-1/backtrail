@@ -2,24 +2,24 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cli } from "./cli";
 
 let mockInit = vi.hoisted(() => vi.fn());
-let mockExecImplement = vi.hoisted(() => vi.fn());
+let mockImplement = vi.hoisted(() => vi.fn());
 let mockExecCreate = vi.hoisted(() => vi.fn());
-let mockExecReview = vi.hoisted(() => vi.fn());
+let mockReview = vi.hoisted(() => vi.fn());
 
 vi.mock("./commands/init/init", () => ({
   init: (...args: unknown[]) => mockInit(...args),
 }));
 
-vi.mock("./commands/execImplement/execImplement", () => ({
-  execImplement: (...args: unknown[]) => mockExecImplement(...args),
+vi.mock("./commands/implement/implement", () => ({
+  implement: (...args: unknown[]) => mockImplement(...args),
 }));
 
 vi.mock("./commands/create/create", () => ({
   create: (...args: unknown[]) => mockExecCreate(...args),
 }));
 
-vi.mock("./commands/execReview/execReview", () => ({
-  execReview: (...args: unknown[]) => mockExecReview(...args),
+vi.mock("./commands/review/review", () => ({
+  review: (...args: unknown[]) => mockReview(...args),
 }));
 
 describe("backtrail cli", () => {
@@ -31,8 +31,8 @@ describe("backtrail cli", () => {
       skipped: [".backtrail/tasks.md"],
       errors: [],
     });
-    mockExecImplement.mockReset();
-    mockExecImplement.mockResolvedValue({
+    mockImplement.mockReset();
+    mockImplement.mockResolvedValue({
       success: true,
       output: "agent result",
       errors: [],
@@ -43,8 +43,8 @@ describe("backtrail cli", () => {
       output: "agent result",
       errors: [],
     });
-    mockExecReview.mockReset();
-    mockExecReview.mockResolvedValue({
+    mockReview.mockReset();
+    mockReview.mockResolvedValue({
       success: true,
       output: "agent result",
       errors: [],
@@ -161,7 +161,7 @@ describe("backtrail cli", () => {
     );
 
     expect(console.log).toHaveBeenCalledWith("Agent started to work.");
-    expect(mockExecImplement).toHaveBeenCalledWith({
+    expect(mockImplement).toHaveBeenCalledWith({
       cwd: process.cwd(),
       changeName: "CHANGE-00002",
       taskName: "TASK-00001",
@@ -176,20 +176,12 @@ describe("backtrail cli", () => {
     let command = cli();
 
     await command.parseAsync(
-      [
-        "implement",
-        "-c",
-        "CHANGE-00003",
-        "-F",
-        "FEATURE-00003",
-        "fix",
-        "docs",
-      ],
+      ["implement", "-c", "CHANGE-00003", "-F", "FEATURE-00003", "fix", "docs"],
       { from: "user" },
     );
 
     expect(console.log).toHaveBeenCalledWith("Agent started to work.");
-    expect(mockExecImplement).toHaveBeenCalledWith({
+    expect(mockImplement).toHaveBeenCalledWith({
       cwd: process.cwd(),
       changeName: "CHANGE-00003",
       taskName: undefined,
@@ -238,7 +230,7 @@ describe("backtrail cli", () => {
     );
 
     expect(console.log).toHaveBeenCalledWith("Agent started to work.");
-    expect(mockExecReview).toHaveBeenCalledWith({
+    expect(mockReview).toHaveBeenCalledWith({
       cwd: process.cwd(),
       changeName: "CHANGE-00006",
       taskName: "TASK-00010",
@@ -268,7 +260,7 @@ describe("backtrail cli", () => {
   });
 
   it("sets exit code on top-level implement failure", async () => {
-    mockExecImplement.mockResolvedValue({
+    mockImplement.mockResolvedValue({
       success: false,
       output: "",
       errors: ["PI Coding Agent executable not found. Install `pi` and try again."],
@@ -306,7 +298,7 @@ describe("backtrail cli", () => {
   });
 
   it("sets exit code on top-level review failure", async () => {
-    mockExecReview.mockResolvedValue({
+    mockReview.mockResolvedValue({
       success: false,
       output: "",
       errors: ["PI Coding Agent executable not found. Install `pi` and try again."],
@@ -329,7 +321,7 @@ describe("backtrail cli", () => {
 
     await command.parseAsync(["implement", "fix"], { from: "user" });
 
-    expect(mockExecImplement).toHaveBeenCalledWith({
+    expect(mockImplement).toHaveBeenCalledWith({
       cwd: process.cwd(),
       changeName: undefined,
       taskName: undefined,
@@ -356,7 +348,7 @@ describe("backtrail cli", () => {
 
     await command.parseAsync(["review", "review"], { from: "user" });
 
-    expect(mockExecReview).toHaveBeenCalledWith({
+    expect(mockReview).toHaveBeenCalledWith({
       cwd: process.cwd(),
       changeName: undefined,
       taskName: undefined,

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { buildExecReviewArguments, buildExecReviewPrompt } from "./execReviewConfig";
-import { execReview } from "./execReview";
+import { buildReviewArguments, buildReviewPrompt } from "./reviewConfig";
+import { review } from "./review";
 
 let mockRunExec = vi.hoisted(() => vi.fn());
 
@@ -9,7 +9,7 @@ vi.mock("../execRuntime", () => ({
   runExec: (...args: unknown[]) => mockRunExec(...args),
 }));
 
-describe("backtrail exec review command", () => {
+describe("backtrail review command", () => {
   beforeEach(() => {
     mockRunExec.mockReset();
     mockRunExec.mockResolvedValue({
@@ -20,7 +20,7 @@ describe("backtrail exec review command", () => {
   });
 
   it("passes review skill and selected context to shared runtime", async () => {
-    await execReview({
+    await review({
       cwd: "/project",
       changeName: "CHANGE-00006",
       taskName: "TASK-00010",
@@ -41,7 +41,7 @@ describe("backtrail exec review command", () => {
   });
 
   it("passes prompt without optional change, task, or feature context", async () => {
-    await execReview({
+    await review({
       cwd: "/project",
       promptParts: ["review", "implementation"],
     });
@@ -56,7 +56,7 @@ describe("backtrail exec review command", () => {
   });
 
   it("passes force flag to shared runtime", async () => {
-    await execReview({
+    await review({
       cwd: "/project",
       force: true,
       promptParts: ["review", "implementation"],
@@ -74,7 +74,7 @@ describe("backtrail exec review command", () => {
 
   it("builds review prompt from change, task, feature, force, and free-form text", () => {
     expect(
-      buildExecReviewPrompt({
+      buildReviewPrompt({
         changeName: "CHANGE-00006",
         taskName: "TASK-00010",
         featureName: "FEATURE-00006",
@@ -88,7 +88,7 @@ describe("backtrail exec review command", () => {
 
   it("builds review arguments with model and reasoning defaults", () => {
     expect(
-      buildExecReviewArguments({
+      buildReviewArguments({
         cwd: "/project",
         changeName: "CHANGE-00006",
         promptParts: ["review"],

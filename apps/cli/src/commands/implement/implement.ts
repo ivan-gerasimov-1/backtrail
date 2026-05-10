@@ -6,7 +6,7 @@ import {
 import { runExec } from "../execRuntime";
 import { TExecOptions } from "../types";
 
-export async function execImplement(options: TExecOptions) {
+export async function implement(options: TExecOptions) {
   return runExec({
     ...options,
     skillPrompt: EXEC_SKILL,

@@ -7,24 +7,24 @@ import {
 import { TExecOptions, type TExecRuntimeOptions } from "../types";
 
 export { EXEC_BINARY };
-export const EXEC_REVIEW_SKILL = "/skill:backtrail-review";
-export const EXEC_REVIEW_MODEL = "5.5";
-export const EXEC_REVIEW_REASONING_EFFORT = "low";
+export const REVIEW_SKILL = "/skill:backtrail-review";
+export const REVIEW_MODEL = "5.5";
+export const REVIEW_REASONING_EFFORT = "low";
 
-export function buildExecReviewPrompt(
+export function buildReviewPrompt(
   options: Omit<TExecPromptOptions, "skillPrompt">,
 ) {
   return buildSharedExecPrompt({
     ...options,
-    skillPrompt: EXEC_REVIEW_SKILL,
+    skillPrompt: REVIEW_SKILL,
   });
 }
 
-export function buildExecReviewArguments(options: TExecOptions) {
+export function buildReviewArguments(options: TExecOptions) {
   return buildSharedExecArguments({
     ...options,
-    skillPrompt: EXEC_REVIEW_SKILL,
-    model: EXEC_REVIEW_MODEL,
-    reasoningEffort: EXEC_REVIEW_REASONING_EFFORT,
+    skillPrompt: REVIEW_SKILL,
+    model: REVIEW_MODEL,
+    reasoningEffort: REVIEW_REASONING_EFFORT,
   } satisfies TExecRuntimeOptions);
 }

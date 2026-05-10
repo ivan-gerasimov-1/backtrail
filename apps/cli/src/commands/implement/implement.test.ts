@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { execImplement } from "./execImplement";
+import { implement } from "./implement";
 
 let mockRunExec = vi.hoisted(() => vi.fn());
 
@@ -8,7 +8,7 @@ vi.mock("../execRuntime", () => ({
   runExec: (...args: unknown[]) => mockRunExec(...args),
 }));
 
-describe("backtrail exec implement command", () => {
+describe("backtrail implement command", () => {
   beforeEach(() => {
     mockRunExec.mockReset();
     mockRunExec.mockResolvedValue({
@@ -19,7 +19,7 @@ describe("backtrail exec implement command", () => {
   });
 
   it("passes implementation skill and selected context to shared runtime", async () => {
-    await execImplement({
+    await implement({
       cwd: "/project",
       changeName: "CHANGE-00002",
       taskName: "TASK-00001",
@@ -40,7 +40,7 @@ describe("backtrail exec implement command", () => {
   });
 
   it("passes prompt without optional change or task context", async () => {
-    await execImplement({
+    await implement({
       cwd: "/project",
       promptParts: ["fix", "docs"],
     });
@@ -55,7 +55,7 @@ describe("backtrail exec implement command", () => {
   });
 
   it("passes force flag to shared runtime", async () => {
-    await execImplement({
+    await implement({
       cwd: "/project",
       force: true,
       promptParts: ["fix", "docs"],

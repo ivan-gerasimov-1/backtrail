@@ -2,7 +2,7 @@
 
 | Status   | Date       | Change       | Blocked By | Blocks |
 | -------- | ---------- | ------------ | ---------- | ------ |
-| Todo     | 2026-05-10 | [CHANGE-00008](../changes/change-00008-implement-top-level-backtrail-workflow-commands.md) | [TASK-00014](task-00014-expose-top-level-workflow-command-routing.md) | [TASK-00017](task-00017-update-workflow-command-documentation-and-verify.md) |
+| Done     | 2026-05-10 | [CHANGE-00008](../changes/change-00008-implement-top-level-backtrail-workflow-commands.md) | [TASK-00014](task-00014-expose-top-level-workflow-command-routing.md) | [TASK-00017](task-00017-update-workflow-command-documentation-and-verify.md) |
 
 ## Goal
 
