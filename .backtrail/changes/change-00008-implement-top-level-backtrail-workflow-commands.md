@@ -33,6 +33,13 @@ Excluded:
 5. Update user-facing docs and examples to use the top-level command forms.
 6. Run tests and typecheck to confirm the new CLI surface works and old public namespace is absent.
 
+## Tasks
+
+- [TASK-00014](tasks/task-00014-expose-top-level-workflow-command-routing.md)
+- [TASK-00015](tasks/task-00015-rename-create-command-module.md)
+- [TASK-00016](tasks/task-00016-rename-implement-and-review-command-modules.md)
+- [TASK-00017](tasks/task-00017-update-workflow-command-documentation-and-verify.md)
+
 ## Verification
 
 Run:
