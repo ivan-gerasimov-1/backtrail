@@ -3,7 +3,7 @@ import { cli } from "./cli";
 
 let mockInit = vi.hoisted(() => vi.fn());
 let mockImplement = vi.hoisted(() => vi.fn());
-let mockExecCreate = vi.hoisted(() => vi.fn());
+let mockCreate = vi.hoisted(() => vi.fn());
 let mockReview = vi.hoisted(() => vi.fn());
 
 vi.mock("./commands/init/init", () => ({
@@ -15,7 +15,7 @@ vi.mock("./commands/implement/implement", () => ({
 }));
 
 vi.mock("./commands/create/create", () => ({
-  create: (...args: unknown[]) => mockExecCreate(...args),
+  create: (...args: unknown[]) => mockCreate(...args),
 }));
 
 vi.mock("./commands/review/review", () => ({
@@ -37,8 +37,8 @@ describe("backtrail cli", () => {
       output: "agent result",
       errors: [],
     });
-    mockExecCreate.mockReset();
-    mockExecCreate.mockResolvedValue({
+    mockCreate.mockReset();
+    mockCreate.mockResolvedValue({
       success: true,
       output: "agent result",
       errors: [],
@@ -200,7 +200,7 @@ describe("backtrail cli", () => {
     );
 
     expect(console.log).toHaveBeenCalledWith("Agent started to work.");
-    expect(mockExecCreate).toHaveBeenCalledWith({
+    expect(mockCreate).toHaveBeenCalledWith({
       cwd: process.cwd(),
       changeName: "CHANGE-00003",
       featureName: "FEATURE-00003",
@@ -279,7 +279,7 @@ describe("backtrail cli", () => {
   });
 
   it("sets exit code on top-level create failure", async () => {
-    mockExecCreate.mockResolvedValue({
+    mockCreate.mockResolvedValue({
       success: false,
       output: "",
       errors: ["PI Coding Agent executable not found. Install `pi` and try again."],
@@ -335,7 +335,7 @@ describe("backtrail cli", () => {
 
     await command.parseAsync(["create", "draft"], { from: "user" });
 
-    expect(mockExecCreate).toHaveBeenCalledWith({
+    expect(mockCreate).toHaveBeenCalledWith({
       cwd: process.cwd(),
       changeName: undefined,
       featureName: undefined,
