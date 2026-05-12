@@ -33,6 +33,14 @@ Excluded:
 4. Update command tests for default config absence, explicit path loading, malformed JSON, unreadable explicit paths, and init output.
 5. Update CLI documentation for config file path and `--config` usage.
 
+## Tasks
+
+- [TASK-00018](tasks/task-00018-add-config-loader-contract.md)
+- [TASK-00019](tasks/task-00019-wire-shared-config-option.md)
+- [TASK-00020](tasks/task-00020-create-config-file-during-init.md)
+- [TASK-00021](tasks/task-00021-cover-config-error-semantics.md)
+- [TASK-00022](tasks/task-00022-update-config-documentation-and-verify.md)
+
 ## Verification
 
 Run:
