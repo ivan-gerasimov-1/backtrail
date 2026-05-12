@@ -8,7 +8,7 @@
 
 Backtrail CLI currently relies on built-in command defaults and workspace files under `.backtrail`. There is no durable place for workspace-level CLI settings, and commands do not share a public way to override that settings location.
 
-The requested behavior adds `.backtrail/backtrail.config.json`, loads it when the CLI starts, creates it during `backtrail init`, and lets commands accept a config path with `--config` / `-c`. This changes the public CLI contract and the generated workspace output, so the contract should be recorded before implementation.
+The requested behavior adds `.backtrail/backtrail.config.json`, loads it when the CLI starts, creates it during `backtrail init`, and lets commands accept a config path with `--config`. This changes the public CLI contract and the generated workspace output, so the contract should be recorded before implementation.
 
 ## Decision
 
