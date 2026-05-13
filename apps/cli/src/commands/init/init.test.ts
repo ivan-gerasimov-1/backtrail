@@ -67,6 +67,11 @@ describe("backtrail init command", () => {
         expect.any(String),
         "utf-8",
       );
+      expect(mockFs.writeFile).toHaveBeenCalledWith(
+        "/project/.backtrail/backtrail.config.json",
+        "{}\n",
+        "utf-8",
+      );
     });
 
     it("should report created files in result", async () => {
@@ -79,6 +84,7 @@ describe("backtrail init command", () => {
       expect(result.created).toContain(".backtrail/changes.md");
       expect(result.created).toContain(".backtrail/features.md");
       expect(result.created).toContain(".backtrail/tasks.md");
+      expect(result.created).toContain(".backtrail/backtrail.config.json");
       expect(result.created).toContain(".backtrail/adrs/");
       expect(result.created).toContain(".backtrail/changes/");
       expect(result.created).toContain(".backtrail/features/");
@@ -108,6 +114,24 @@ describe("backtrail init command", () => {
       expect(mockFs.writeFile).not.toHaveBeenCalledWith(
         "/project/.backtrail/changes.md",
         expect.any(String),
+        "utf-8",
+      );
+    });
+
+    it("should not overwrite existing config file", async () => {
+      mockFs.stat.mockImplementation(async (path: string) => {
+        if (path === "/project/.backtrail/backtrail.config.json") {
+          return isFile();
+        }
+        return isDir();
+      });
+
+      let result = await init({ cwd: "/project" });
+
+      expect(result.skipped).toContain(".backtrail/backtrail.config.json");
+      expect(mockFs.writeFile).not.toHaveBeenCalledWith(
+        "/project/.backtrail/backtrail.config.json",
+        "{}\n",
         "utf-8",
       );
     });

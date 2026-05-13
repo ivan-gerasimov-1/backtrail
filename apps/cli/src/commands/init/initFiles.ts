@@ -1,5 +1,6 @@
 import { stat, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+
 import { tryCreate } from "../fsUtils";
 import { TInitStepResult } from "../types";
 
@@ -12,6 +13,7 @@ const EDefaultIndexFiles: Record<string, string> = {
     "# Backtrail Features\n\n| Feature | Status | Date | Title / Summary |\n| ------- | ------ | ---- | --------------- |\n",
   "tasks.md":
     "# Backtrail Tasks\n\n| Task | Status | Date | Change | Blocked By | Blocks | Title / Summary |\n| ---- | ------ | ---- | ------ | ---------- | ------ | --------------- |\n",
+  "backtrail.config.json": "{}\n",
 };
 
 export async function createIndexFiles(
