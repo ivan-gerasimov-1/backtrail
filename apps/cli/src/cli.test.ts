@@ -5,6 +5,7 @@ let mockInit = vi.hoisted(() => vi.fn());
 let mockImplement = vi.hoisted(() => vi.fn());
 let mockCreate = vi.hoisted(() => vi.fn());
 let mockReview = vi.hoisted(() => vi.fn());
+let mockLoadCommandConfig = vi.hoisted(() => vi.fn());
 
 vi.mock("./commands/init/init", () => ({
   init: (...args: unknown[]) => mockInit(...args),
@@ -20,6 +21,10 @@ vi.mock("./commands/create/create", () => ({
 
 vi.mock("./commands/review/review", () => ({
   review: (...args: unknown[]) => mockReview(...args),
+}));
+
+vi.mock("./commands/commandConfig", () => ({
+  loadCommandConfig: (...args: unknown[]) => mockLoadCommandConfig(...args),
 }));
 
 describe("backtrail cli", () => {
@@ -49,6 +54,14 @@ describe("backtrail cli", () => {
       output: "agent result",
       errors: [],
     });
+    mockLoadCommandConfig.mockReset();
+    mockLoadCommandConfig.mockResolvedValue({
+      success: true,
+      config: {},
+      configPath: "/project/.backtrail/backtrail.config.json",
+      source: "default",
+      errors: [],
+    });
     vi.spyOn(console, "log").mockImplementation(() => {});
     vi.spyOn(console, "error").mockImplementation(() => {});
     process.exitCode = undefined;
@@ -63,6 +76,17 @@ describe("backtrail cli", () => {
 
     expect(command.commands.map((subcommand) => subcommand.name())).toContain(
       "init",
+    );
+  });
+
+  it("registers shared config option on init command", () => {
+    let command = cli();
+    let initCommand = command.commands.find(
+      (subcommand) => subcommand.name() === "init",
+    );
+
+    expect(initCommand?.options.map((option) => option.flags)).toContain(
+      "--config <path>",
     );
   });
 
@@ -90,6 +114,9 @@ describe("backtrail cli", () => {
     );
 
     expect(implementCommand?.options.map((option) => option.flags)).toContain(
+      "--config <path>",
+    );
+    expect(implementCommand?.options.map((option) => option.flags)).toContain(
       "-c, --change <name>",
     );
     expect(implementCommand?.options.map((option) => option.flags)).toContain(
@@ -110,6 +137,9 @@ describe("backtrail cli", () => {
     );
 
     expect(createCommand?.options.map((option) => option.flags)).toContain(
+      "--config <path>",
+    );
+    expect(createCommand?.options.map((option) => option.flags)).toContain(
       "-c, --change <name>",
     );
     expect(createCommand?.options.map((option) => option.flags)).toContain(
@@ -126,6 +156,9 @@ describe("backtrail cli", () => {
       (subcommand) => subcommand.name() === "review",
     );
 
+    expect(reviewCommand?.options.map((option) => option.flags)).toContain(
+      "--config <path>",
+    );
     expect(reviewCommand?.options.map((option) => option.flags)).toContain(
       "-c, --change <name>",
     );
@@ -145,7 +178,13 @@ describe("backtrail cli", () => {
 
     await command.parseAsync(["init"], { from: "user" });
 
+    expect(mockLoadCommandConfig).toHaveBeenCalledWith({
+      cwd: process.cwd(),
+    });
     expect(mockInit).toHaveBeenCalledWith({ cwd: process.cwd() });
+    expect(mockLoadCommandConfig.mock.invocationCallOrder[0]!).toBeLessThan(
+      mockInit.mock.invocationCallOrder[0]!,
+    );
     expect(console.log).toHaveBeenCalledWith("created .backtrail/");
     expect(console.log).toHaveBeenCalledWith("created .backtrail/adl.md");
     expect(console.log).toHaveBeenCalledWith("skipped .backtrail/tasks.md");
@@ -160,7 +199,9 @@ describe("backtrail cli", () => {
       { from: "user" },
     );
 
-    expect(console.log).toHaveBeenCalledWith("Agent started to work.");
+    expect(mockLoadCommandConfig).toHaveBeenCalledWith({
+      cwd: process.cwd(),
+    });
     expect(mockImplement).toHaveBeenCalledWith({
       cwd: process.cwd(),
       changeName: "CHANGE-00002",
@@ -169,6 +210,10 @@ describe("backtrail cli", () => {
       force: true,
       promptParts: ["fix", "docs"],
     });
+    expect(mockLoadCommandConfig.mock.invocationCallOrder[0]!).toBeLessThan(
+      mockImplement.mock.invocationCallOrder[0]!,
+    );
+    expect(console.log).toHaveBeenCalledWith("Agent started to work.");
     expect(console.error).not.toHaveBeenCalled();
   });
 
@@ -180,7 +225,9 @@ describe("backtrail cli", () => {
       { from: "user" },
     );
 
-    expect(console.log).toHaveBeenCalledWith("Agent started to work.");
+    expect(mockLoadCommandConfig).toHaveBeenCalledWith({
+      cwd: process.cwd(),
+    });
     expect(mockImplement).toHaveBeenCalledWith({
       cwd: process.cwd(),
       changeName: "CHANGE-00003",
@@ -188,6 +235,10 @@ describe("backtrail cli", () => {
       featureName: "FEATURE-00003",
       promptParts: ["fix", "docs"],
     });
+    expect(mockLoadCommandConfig.mock.invocationCallOrder[0]!).toBeLessThan(
+      mockImplement.mock.invocationCallOrder[0]!,
+    );
+    expect(console.log).toHaveBeenCalledWith("Agent started to work.");
     expect(console.error).not.toHaveBeenCalled();
   });
 
@@ -195,11 +246,14 @@ describe("backtrail cli", () => {
     let command = cli();
 
     await command.parseAsync(
-      ["create", "-c", "CHANGE-00003", "-F", "FEATURE-00003", "--force", "draft", "brief"],
+      ["create", "--config", "workspace/backtrail.config.json", "-c", "CHANGE-00003", "-F", "FEATURE-00003", "--force", "draft", "brief"],
       { from: "user" },
     );
 
-    expect(console.log).toHaveBeenCalledWith("Agent started to work.");
+    expect(mockLoadCommandConfig).toHaveBeenCalledWith({
+      cwd: process.cwd(),
+      configPath: "workspace/backtrail.config.json",
+    });
     expect(mockCreate).toHaveBeenCalledWith({
       cwd: process.cwd(),
       changeName: "CHANGE-00003",
@@ -207,6 +261,10 @@ describe("backtrail cli", () => {
       force: true,
       promptParts: ["draft", "brief"],
     });
+    expect(mockLoadCommandConfig.mock.invocationCallOrder[0]!).toBeLessThan(
+      mockCreate.mock.invocationCallOrder[0]!,
+    );
+    expect(console.log).toHaveBeenCalledWith("Agent started to work.");
     expect(console.error).not.toHaveBeenCalled();
   });
 
@@ -229,7 +287,9 @@ describe("backtrail cli", () => {
       { from: "user" },
     );
 
-    expect(console.log).toHaveBeenCalledWith("Agent started to work.");
+    expect(mockLoadCommandConfig).toHaveBeenCalledWith({
+      cwd: process.cwd(),
+    });
     expect(mockReview).toHaveBeenCalledWith({
       cwd: process.cwd(),
       changeName: "CHANGE-00006",
@@ -238,6 +298,10 @@ describe("backtrail cli", () => {
       force: true,
       promptParts: ["review", "implementation"],
     });
+    expect(mockLoadCommandConfig.mock.invocationCallOrder[0]!).toBeLessThan(
+      mockReview.mock.invocationCallOrder[0]!,
+    );
+    expect(console.log).toHaveBeenCalledWith("Agent started to work.");
     expect(console.error).not.toHaveBeenCalled();
   });
 
@@ -316,11 +380,57 @@ describe("backtrail cli", () => {
     expect(process.exitCode).toBe(1);
   });
 
+  it.each([
+    {
+      commandName: "init",
+      commandArgs: ["init", "--config", "workspace/backtrail.config.json"],
+      commandHandler: mockInit,
+    },
+    {
+      commandName: "create",
+      commandArgs: ["create", "--config", "workspace/backtrail.config.json"],
+      commandHandler: mockCreate,
+    },
+    {
+      commandName: "implement",
+      commandArgs: ["implement", "--config", "workspace/backtrail.config.json"],
+      commandHandler: mockImplement,
+    },
+    {
+      commandName: "review",
+      commandArgs: ["review", "--config", "workspace/backtrail.config.json"],
+      commandHandler: mockReview,
+    },
+  ])(
+    "bails before $commandName work when shared config load fails",
+    async ({ commandArgs, commandHandler }) => {
+      mockLoadCommandConfig.mockResolvedValueOnce({
+        success: false,
+        errors: ["Backtrail config invalid"],
+      });
+
+      let command = cli();
+
+      await command.parseAsync(commandArgs, { from: "user" });
+
+      expect(mockLoadCommandConfig).toHaveBeenCalledWith({
+        cwd: process.cwd(),
+        configPath: "workspace/backtrail.config.json",
+      });
+      expect(commandHandler).not.toHaveBeenCalled();
+      expect(console.error).toHaveBeenCalledWith("error Backtrail config invalid");
+      expect(process.exitCode).toBe(1);
+    },
+  );
+
   it("allows top-level implement without change and task options", async () => {
     let command = cli();
 
     await command.parseAsync(["implement", "fix"], { from: "user" });
 
+    expect(mockLoadCommandConfig).toHaveBeenCalledWith({
+      cwd: process.cwd(),
+    });
     expect(mockImplement).toHaveBeenCalledWith({
       cwd: process.cwd(),
       changeName: undefined,
@@ -335,6 +445,9 @@ describe("backtrail cli", () => {
 
     await command.parseAsync(["create", "draft"], { from: "user" });
 
+    expect(mockLoadCommandConfig).toHaveBeenCalledWith({
+      cwd: process.cwd(),
+    });
     expect(mockCreate).toHaveBeenCalledWith({
       cwd: process.cwd(),
       changeName: undefined,
@@ -348,6 +461,9 @@ describe("backtrail cli", () => {
 
     await command.parseAsync(["review", "review"], { from: "user" });
 
+    expect(mockLoadCommandConfig).toHaveBeenCalledWith({
+      cwd: process.cwd(),
+    });
     expect(mockReview).toHaveBeenCalledWith({
       cwd: process.cwd(),
       changeName: undefined,

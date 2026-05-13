@@ -2,10 +2,35 @@ import { Command } from "commander";
 import { cwd } from "node:process";
 
 import { create } from "./commands/create/create";
+import { loadCommandConfig } from "./commands/commandConfig";
 import { implement } from "./commands/implement/implement";
+import { init } from "./commands/init/init";
 import { review } from "./commands/review/review";
 import { handleExecResult } from "./commands/execResult";
-import { init } from "./commands/init/init";
+
+type TCommandConfigOptions = {
+  config?: string;
+};
+
+type TImplementCommandOptions = TCommandConfigOptions & {
+  change?: string;
+  task?: string;
+  feature?: string;
+  force?: boolean;
+};
+
+type TCreateCommandOptions = TCommandConfigOptions & {
+  change?: string;
+  feature?: string;
+  force?: boolean;
+};
+
+type TReviewCommandOptions = TCommandConfigOptions & {
+  change?: string;
+  task?: string;
+  feature?: string;
+  force?: boolean;
+};
 
 export function cli() {
   let command = new Command()
@@ -16,9 +41,16 @@ export function cli() {
 
   command
     .command("init")
+    .option("--config <path>", "Backtrail config file path")
     .description("Initialize Backtrail files in current directory")
-    .action(async () => {
-      let result = await init({ cwd: cwd() });
+    .action(async (options: TCommandConfigOptions) => {
+      let workingDirectory = cwd();
+
+      if (!(await loadSharedConfig(workingDirectory, options.config))) {
+        return;
+      }
+
+      let result = await init({ cwd: workingDirectory });
 
       for (let createdPath of result.created) {
         console.log(`created ${createdPath}`);
@@ -39,6 +71,7 @@ export function cli() {
 
   command
     .command("implement [promptParts...]")
+    .option("--config <path>", "Backtrail config file path")
     .option("-c, --change <name>", "Backtrail change name")
     .option("-t, --task <name>", "Backtrail task name")
     .option("-F, --feature <name>", "Backtrail feature name")
@@ -49,12 +82,18 @@ export function cli() {
     .action(
       async (
         promptParts: string[] | undefined,
-        options: { change?: string; task?: string; feature?: string; force?: boolean },
+        options: TImplementCommandOptions,
       ) => {
+        let workingDirectory = cwd();
+
+        if (!(await loadSharedConfig(workingDirectory, options.config))) {
+          return;
+        }
+
         console.log("Agent started to work.");
 
         let result = await implement({
-          cwd: cwd(),
+          cwd: workingDirectory,
           changeName: options.change,
           taskName: options.task,
           featureName: options.feature,
@@ -68,6 +107,7 @@ export function cli() {
 
   command
     .command("create [promptParts...]")
+    .option("--config <path>", "Backtrail config file path")
     .option("-c, --change <name>", "Backtrail change name")
     .option("-F, --feature <name>", "Backtrail feature name")
     .option("-f, --force", "Avoid clarification questions and proceed with available context")
@@ -77,12 +117,18 @@ export function cli() {
     .action(
       async (
         promptParts: string[] | undefined,
-        options: { change?: string; feature?: string; force?: boolean },
+        options: TCreateCommandOptions,
       ) => {
+        let workingDirectory = cwd();
+
+        if (!(await loadSharedConfig(workingDirectory, options.config))) {
+          return;
+        }
+
         console.log("Agent started to work.");
 
         let result = await create({
-          cwd: cwd(),
+          cwd: workingDirectory,
           changeName: options.change,
           featureName: options.feature,
           ...(options.force ? { force: true } : {}),
@@ -95,6 +141,7 @@ export function cli() {
 
   command
     .command("review [promptParts...]")
+    .option("--config <path>", "Backtrail config file path")
     .option("-c, --change <name>", "Backtrail change name")
     .option("-t, --task <name>", "Backtrail task name")
     .option("-F, --feature <name>", "Backtrail feature name")
@@ -105,12 +152,18 @@ export function cli() {
     .action(
       async (
         promptParts: string[] | undefined,
-        options: { change?: string; task?: string; feature?: string; force?: boolean },
+        options: TReviewCommandOptions,
       ) => {
+        let workingDirectory = cwd();
+
+        if (!(await loadSharedConfig(workingDirectory, options.config))) {
+          return;
+        }
+
         console.log("Agent started to work.");
 
         let result = await review({
-          cwd: cwd(),
+          cwd: workingDirectory,
           changeName: options.change,
           taskName: options.task,
           featureName: options.feature,
@@ -123,4 +176,22 @@ export function cli() {
     );
 
   return command;
+}
+
+async function loadSharedConfig(workingDirectory: string, configPath?: string) {
+  let result = await loadCommandConfig({
+    cwd: workingDirectory,
+    ...(configPath ? { configPath } : {}),
+  });
+
+  if (result.success) {
+    return true;
+  }
+
+  for (let errorMessage of result.errors) {
+    console.error(`error ${errorMessage}`);
+  }
+
+  process.exitCode = 1;
+  return false;
 }
