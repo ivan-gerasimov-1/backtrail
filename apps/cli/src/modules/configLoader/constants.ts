@@ -1,0 +1,1 @@
+export const DEFAULT_CONFIG_PATH = ".backtrail/backtrail.config.json";
