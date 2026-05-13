@@ -2,7 +2,7 @@
 
 | Status   | Date       | ADRs                                                        | Blocked By | Blocks |
 | -------- | ---------- | ----------------------------------------------------------- | ---------- | ------ |
-| Proposed | 2026-05-12 | [ADR-00003](../adrs/adr-00003-backtrail-cli-config-file.md) | -          | -      |
+| Done | 2026-05-12 | [ADR-00003](../adrs/adr-00003-backtrail-cli-config-file.md) | -          | -      |
 
 ## Goal
 

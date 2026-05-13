@@ -41,7 +41,7 @@ export function cli() {
 
   command
     .command("init")
-    .option("--config <path>", "Backtrail config file path")
+    .option("--config <path>", "Backtrail config file path (default: .backtrail/backtrail.config.json)")
     .description("Initialize Backtrail files in current directory")
     .action(async (options: TCommandConfigOptions) => {
       let workingDirectory = cwd();
@@ -71,7 +71,7 @@ export function cli() {
 
   command
     .command("implement [promptParts...]")
-    .option("--config <path>", "Backtrail config file path")
+    .option("--config <path>", "Backtrail config file path (default: .backtrail/backtrail.config.json)")
     .option("-c, --change <name>", "Backtrail change name")
     .option("-t, --task <name>", "Backtrail task name")
     .option("-F, --feature <name>", "Backtrail feature name")
@@ -107,7 +107,7 @@ export function cli() {
 
   command
     .command("create [promptParts...]")
-    .option("--config <path>", "Backtrail config file path")
+    .option("--config <path>", "Backtrail config file path (default: .backtrail/backtrail.config.json)")
     .option("-c, --change <name>", "Backtrail change name")
     .option("-F, --feature <name>", "Backtrail feature name")
     .option("-f, --force", "Avoid clarification questions and proceed with available context")
@@ -141,7 +141,7 @@ export function cli() {
 
   command
     .command("review [promptParts...]")
-    .option("--config <path>", "Backtrail config file path")
+    .option("--config <path>", "Backtrail config file path (default: .backtrail/backtrail.config.json)")
     .option("-c, --change <name>", "Backtrail change name")
     .option("-t, --task <name>", "Backtrail task name")
     .option("-F, --feature <name>", "Backtrail feature name")
