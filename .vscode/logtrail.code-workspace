@@ -1,8 +1,17 @@
 {
 	"folders": [
 		{
+			"name": "root",
 			"path": "../"
-		}
+		},
+		{
+			"name": "apps/cli",
+			"path": "../apps/cli"
+		},
+		{
+			"name": "packages/skills",
+			"path": "../packages/skills"
+		},
 	],
 	"settings": {
 		"js/ts.tsdk.path": "node_modules/typescript/lib"
