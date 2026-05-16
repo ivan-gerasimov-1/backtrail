@@ -16,7 +16,7 @@
     "deps:update": "ncu --workspaces --upgrade --enginesNode --format group --reject @types/node"
   },
   "devDependencies": {
-    "npm-check-updates": "22.1.0",
+    "npm-check-updates": "22.2.0",
     "typescript": "6.0.3"
   }
 }

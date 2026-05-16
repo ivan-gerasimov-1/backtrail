@@ -6,7 +6,7 @@ permissions:
 
 env:
   NODE_VERSION_FILE: .nvmrc
-  WRANGLER_VERSION: 4.85.0
+  WRANGLER_VERSION: 4.92.0
 
   PNPM_BUILD_CMD: --filter @backtrail/site build
 
