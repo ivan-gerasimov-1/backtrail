@@ -1,22 +1,22 @@
 {
-  "name": "backtrail",
-  "version": "0.1.0",
-  "description": "Backtrail",
-  "engines": {
-    "node": ">=24.14",
-    "pnpm": ">=11"
-  },
-  "files": [
-    "README.md"
-  ],
-  "scripts": {
-    "typecheck": "pnpm -r --if-present typecheck",
-    "build": "pnpm -r --if-present build",
-    "test": "pnpm -r --if-present test",
-    "deps:update": "ncu --workspaces --upgrade --enginesNode --format group --reject @types/node"
-  },
-  "devDependencies": {
-    "npm-check-updates": "22.2.0",
-    "typescript": "catalog:"
-  }
+	"name": "backtrail",
+	"version": "0.1.0",
+	"description": "Backtrail",
+	"engines": {
+		"node": ">=24.14",
+		"pnpm": ">=11"
+	},
+	"files": [
+		"README.md"
+	],
+	"scripts": {
+		"typecheck": "pnpm -r --if-present typecheck",
+		"build": "pnpm -r --if-present build",
+		"test": "pnpm -r --if-present test",
+		"deps:update": "ncu --workspaces --upgrade --enginesNode --format group --reject @types/node"
+	},
+	"devDependencies": {
+		"npm-check-updates": "22.2.0",
+		"typescript": "catalog:"
+	}
 }
