@@ -4,6 +4,8 @@ trustPolicy: no-downgrade
 trustPolicyExclude:
   - semver@6.3.1
 
+enableGlobalVirtualStore: true
+
 catalogMode: strict
 cleanupUnusedCatalogs: true
 
