@@ -13,11 +13,9 @@
 		"typecheck": "pnpm -r --if-present typecheck",
 		"build": "pnpm -r --if-present build",
 		"test": "pnpm -r --if-present test",
-		"deprecated:deps:update": "ncu --workspaces --upgrade --enginesNode --format group --reject @types/node",
 		"deps:update": "taze -r --include-locked --maturity-period 2"
 	},
 	"devDependencies": {
-		"npm-check-updates": "22.2.0",
 		"taze": "catalog:",
 		"typescript": "catalog:"
 	}
