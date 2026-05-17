@@ -8,6 +8,7 @@ catalogMode: strict
 cleanupUnusedCatalogs: true
 
 catalog:
+  taze: 19.12.0
   typescript: 6.0.3
 
 packages:
