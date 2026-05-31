@@ -39,6 +39,7 @@ chore(*): cleanup code
 - Prefer function declarations (`function name() {}`) over function expressions (`const name = () => {}`) for named functions by default.
 - Prefer simple step-by-step expressions over dense nested conditionals or ternaries.
 - When handling object-shaped API responses, prefer early destructuring (`{ data, error }`) and concise domain names for locals.
+- Do not use single-letter variable names.
 - Use `let` by default for variables.
 - Use `const` only for true constants.
   ```typescript
@@ -65,8 +66,3 @@ chore(*): cleanup code
 - Prefix enum and constant object names with `E`.
 - Use PascalCase for enums and constant objects.
 - Use objects with `as const` + `typeof` for union types.
-
-## Linting
-
-- Do not use single-letter variable names.
-- Do not use `return await`.
