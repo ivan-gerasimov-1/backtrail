@@ -24,7 +24,7 @@ chore(*): cleanup code
 
 ## Testing
 
-- All new functionality must be covered by unit tests.
+- New functionality must be covered by unit tests.
 - Tests should validate behavior, not implementation details.
 
 ## Architecture and Module Boundaries
