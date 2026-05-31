@@ -2,7 +2,7 @@
 
 | Status | Date       | Change       | Blocked By | Blocks     |
 | ------ | ---------- | ------------ | ---------- | ---------- |
-| Todo   | 2026-05-31 | CHANGE-00010 | TASK-00023 | TASK-00025 |
+| Done   | 2026-05-31 | CHANGE-00010 | TASK-00023 | TASK-00025 |
 
 ## Goal
 

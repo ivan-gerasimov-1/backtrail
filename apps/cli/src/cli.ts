@@ -98,6 +98,13 @@ function buildRootCommand(runtimeContext: TCommandRuntimeContext) {
       description: "CLI for Backtrail workspace setup",
       version: "0.1.0",
     },
+    args: {
+      config: {
+        type: "string",
+        description: "Backtrail config file path (default: .backtrail/backtrail.config.json)",
+        valueHint: "path",
+      },
+    },
     subCommands: {
       init: buildInitCommand(runtimeContext),
       implement: buildImplementCommand(runtimeContext),

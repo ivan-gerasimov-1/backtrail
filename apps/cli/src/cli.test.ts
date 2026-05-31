@@ -246,7 +246,18 @@ describe("backtrail cli", () => {
     let command = cli();
 
     await command.parseAsync(
-      ["create", "--config", "workspace/backtrail.config.json", "-c", "CHANGE-00003", "-F", "FEATURE-00003", "--force", "draft", "brief"],
+      [
+        "create",
+        "--config",
+        "workspace/backtrail.config.json",
+        "-c",
+        "CHANGE-00003",
+        "-F",
+        "FEATURE-00003",
+        "--force",
+        "draft",
+        "brief",
+      ],
       { from: "user" },
     );
 
@@ -266,6 +277,41 @@ describe("backtrail cli", () => {
     );
     expect(console.log).toHaveBeenCalledWith("Agent started to work.");
     expect(console.error).not.toHaveBeenCalled();
+  });
+
+  it("honors root config before workflow command options", async () => {
+    let command = cli();
+
+    await command.parseAsync(
+      [
+        "--config",
+        "workspace/backtrail.config.json",
+        "implement",
+        "--change",
+        "CHANGE-00002",
+        "--task",
+        "TASK-00001",
+        "--feature",
+        "FEATURE-00003",
+        "--force",
+        "fix",
+        "docs",
+      ],
+      { from: "user" },
+    );
+
+    expect(mockLoadCommandConfig).toHaveBeenCalledWith({
+      cwd: process.cwd(),
+      configPath: "workspace/backtrail.config.json",
+    });
+    expect(mockImplement).toHaveBeenCalledWith({
+      cwd: process.cwd(),
+      changeName: "CHANGE-00002",
+      taskName: "TASK-00001",
+      featureName: "FEATURE-00003",
+      force: true,
+      promptParts: ["fix", "docs"],
+    });
   });
 
   it("invokes top-level review command from cli", async () => {
@@ -471,5 +517,59 @@ describe("backtrail cli", () => {
       featureName: undefined,
       promptParts: ["review"],
     });
+  });
+
+  it("prints root help with citty command metadata", async () => {
+    let command = cli();
+    let exitSpy = vi.spyOn(process, "exit").mockImplementation((() => {
+      throw new Error("process.exit");
+    }) as never);
+
+    await expect(command.parseAsync(["--help"])).rejects.toThrow("process.exit");
+
+    expect(mockLoadCommandConfig).toHaveBeenCalledWith({
+      cwd: process.cwd(),
+    });
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining("CLI for Backtrail workspace setup (backtrail v0.1.0)"),
+    );
+    expect(console.log).toHaveBeenCalledWith(expect.stringContaining("COMMANDS"));
+    expect(console.log).toHaveBeenCalledWith(expect.stringContaining("init"));
+    expect(console.log).toHaveBeenCalledWith(expect.stringContaining("create"));
+    expect(console.log).toHaveBeenCalledWith(expect.stringContaining("implement"));
+    expect(console.log).toHaveBeenCalledWith(expect.stringContaining("review"));
+    expect(exitSpy).toHaveBeenCalledWith(0);
+  });
+
+  it("prints command help with workflow aliases", async () => {
+    let command = cli();
+    let exitSpy = vi.spyOn(process, "exit").mockImplementation((() => {
+      throw new Error("process.exit");
+    }) as never);
+
+    await expect(command.parseAsync(["implement", "--help"])).rejects.toThrow(
+      "process.exit",
+    );
+
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining("Run implementation skill flow."),
+    );
+    expect(console.log).toHaveBeenCalledWith(expect.stringContaining("--config=<path>"));
+    expect(console.log).toHaveBeenCalledWith(expect.stringContaining("-c, --change=<name>"));
+    expect(console.log).toHaveBeenCalledWith(expect.stringContaining("-t, --task=<name>"));
+    expect(console.log).toHaveBeenCalledWith(expect.stringContaining("-F, --feature=<name>"));
+    expect(console.log).toHaveBeenCalledWith(expect.stringContaining("-f, --force"));
+    expect(exitSpy).toHaveBeenCalledWith(0);
+  });
+
+  it("prints root version", async () => {
+    let command = cli();
+
+    await command.parseAsync(["--version"]);
+
+    expect(mockLoadCommandConfig).toHaveBeenCalledWith({
+      cwd: process.cwd(),
+    });
+    expect(console.log).toHaveBeenCalledWith("0.1.0");
   });
 });
