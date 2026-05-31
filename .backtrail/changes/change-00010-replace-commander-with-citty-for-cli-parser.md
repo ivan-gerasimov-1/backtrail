@@ -2,7 +2,7 @@
 
 | Status   | Date       | ADRs                                                               | Blocked By | Blocks |
 | -------- | ---------- | ------------------------------------------------------------------ | ---------- | ------ |
-| Proposed | 2026-05-31 | [ADR-00005](../adrs/adr-00005-use-citty-for-cli-command-parser.md) | -          | -      |
+| Done | 2026-05-31 | [ADR-00005](../adrs/adr-00005-use-citty-for-cli-command-parser.md) | -          | -      |
 
 ## Goal
 
