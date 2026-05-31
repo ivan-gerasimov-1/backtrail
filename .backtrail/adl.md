@@ -6,3 +6,4 @@
 | [ADR-00002](adrs/adr-00002-top-level-backtrail-workflow-commands.md) | Accepted | 2026-05-10 | Top-level Backtrail workflow commands — expose create, implement, and review as top-level commands and remove exec as public namespace. |
 | [ADR-00003](adrs/adr-00003-backtrail-cli-config-file.md)             | Accepted | 2026-05-11 | Backtrail CLI config file — define default JSON config file, init output, startup loading, and shared `--config` CLI contract.          |
 | [ADR-00004](adrs/adr-00004-timestamp-based-backtrail-artifact-ids.md) | Proposed | 2026-05-12 | Timestamp-based Backtrail artifact IDs — use timestamp-derived IDs for new Backtrail records to reduce index allocation conflicts. |
+| [ADR-00005](adrs/adr-00005-use-citty-for-cli-command-parser.md) | Accepted | 2026-05-31 | Use Citty for CLI command parser — replace Commander with citty while preserving the existing public CLI command and option contract. |
