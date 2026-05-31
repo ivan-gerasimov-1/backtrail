@@ -2,6 +2,26 @@
 
 This document describes the development conventions, code style guardrails, and architectural preferences that developers and agents should follow in this project.
 
+## Version Control
+
+### Commits
+
+- Write commit messages in English.
+- Use Conventional Commits:
+  - `feat`: new functionality
+  - `fix`: bug fixes
+  - `docs`: documentation
+  - `style`: formatting
+  - `refactor`: refactoring
+  - `test`: tests
+  - `chore`: maintenance
+
+Example commit message:
+
+```text
+chore(*): cleanup code
+```
+
 ## Testing
 
 - All new functionality must be covered by unit tests.
