@@ -7,6 +7,10 @@ let mockCreate = vi.hoisted(() => vi.fn());
 let mockReview = vi.hoisted(() => vi.fn());
 let mockLoadCommandConfig = vi.hoisted(() => vi.fn());
 
+function throwProcessExit(): never {
+  throw new Error("process.exit");
+}
+
 vi.mock("./commands/init/init", () => ({
   init: (...args: unknown[]) => mockInit(...args),
 }));
@@ -521,9 +525,7 @@ describe("backtrail cli", () => {
 
   it("prints root help with citty command metadata", async () => {
     let command = cli();
-    let exitSpy = vi.spyOn(process, "exit").mockImplementation((() => {
-      throw new Error("process.exit");
-    }) as never);
+    let exitSpy = vi.spyOn(process, "exit").mockImplementation(throwProcessExit);
 
     await expect(command.parseAsync(["--help"])).rejects.toThrow("process.exit");
 
@@ -543,9 +545,7 @@ describe("backtrail cli", () => {
 
   it("prints command help with workflow aliases", async () => {
     let command = cli();
-    let exitSpy = vi.spyOn(process, "exit").mockImplementation((() => {
-      throw new Error("process.exit");
-    }) as never);
+    let exitSpy = vi.spyOn(process, "exit").mockImplementation(throwProcessExit);
 
     await expect(command.parseAsync(["implement", "--help"])).rejects.toThrow(
       "process.exit",
