@@ -1,8 +1,8 @@
 # TASK-00024: Cover citty CLI behavior
 
-| Status  | Date       | Change       | Blocked By | Blocks     |
-| ------- | ---------- | ------------ | ---------- | ---------- |
-| Blocked | 2026-05-31 | CHANGE-00010 | TASK-00023 | TASK-00025 |
+| Status | Date       | Change       | Blocked By | Blocks     |
+| ------ | ---------- | ------------ | ---------- | ---------- |
+| Todo   | 2026-05-31 | CHANGE-00010 | TASK-00023 | TASK-00025 |
 
 ## Goal
 

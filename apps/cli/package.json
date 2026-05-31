@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@clack/prompts": "1.4.0",
-    "commander": "14.0.3",
+    "citty": "0.2.2",
     "zod": "4.4.3"
   }
 }
