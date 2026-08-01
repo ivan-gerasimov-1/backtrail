@@ -32,9 +32,7 @@ State user-visible outcome this feature should provide.
 
 - Product, technical, data, operational, FEATURE, ADR, or CHANGE dependency.
 
-## Risks / Rollback
-
-Describe risks, reversible path, rollback behavior, and compatibility constraints.
+<!-- Add independent risk analysis when useful. Add a dedicated Rollback section only when this capability destroys or irreversibly transforms data; creates a public contract or compatibility break; changes authentication, authorization, security, billing, or financial behavior; requires a migration, compatibility window, coordinated deployment, or manual recovery; or would be materially costly, risky, or operationally complex to reverse. Otherwise omit it. -->
 
 ## Implemented By
 

@@ -35,6 +35,4 @@ Expected result:
 
 - Required behavior passes.
 
-## Rollback
-
-Describe the smallest safe rollback path.
+<!-- Add independent risk analysis when useful. Add a dedicated Rollback section only when this work destroys or irreversibly transforms data; creates a public contract or compatibility break; changes authentication, authorization, security, billing, or financial behavior; requires a migration, compatibility window, coordinated deployment, or manual recovery; or would be materially costly, risky, or operationally complex to reverse. Otherwise omit it. -->

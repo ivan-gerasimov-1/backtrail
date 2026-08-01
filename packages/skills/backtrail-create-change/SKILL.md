@@ -52,29 +52,39 @@ Use the text after this skill invocation as the change brief.
    - If no starting number exists, use the highest `CHANGE-NNNNN` from `.backtrail/changes.md` + 1.
    - If `.backtrail/changes.md` is missing, create it and start at `CHANGE-00001` unless the brief has an explicit starting number.
 5. Stop if `.backtrail/changes/change-NNNNN-title-slug.md` already exists.
-6. Present rough approach before writing.
+6. Assess whether dedicated rollback detail is required. Require it when the work:
+   - destroys or irreversibly transforms data;
+   - creates a public contract or compatibility break;
+   - changes authentication, authorization, security, billing, or financial behavior;
+   - requires a migration, compatibility window, coordinated deployment, or manual recovery; or
+   - would be materially costly, risky, or operationally complex to reverse.
+7. Present rough approach before writing.
    - goal
    - ADR links or standalone rationale
    - scope
    - implementation shape
    - verification
-   - rollback
+   - independent risks, when useful
+   - rollback assessment and, only when a trigger applies, the reversal or recovery plan
    - TASK recommendation: `required`, `recommended`, or `not needed`, with one short reason
    - Use `required` when work is large, risky, parallelizable, depends on multiple checkpoints, or likely needs staged review.
    - Use `recommended` when the CHANGE is moderate but has useful checkpoints.
    - Use `not needed` only when the CHANGE is small and one review is enough.
-7. Ask only questions that change scope, compatibility, verification, or rollback.
-8. Create `.backtrail/changes/change-NNNNN-title-slug.md` from `assets/change-template.md`.
+8. Ask only questions that change scope, compatibility, verification, or a required reversal or recovery plan.
+9. Create `.backtrail/changes/change-NNNNN-title-slug.md` from `assets/change-template.md`.
+   - Add a dedicated `## Rollback` section only when a trigger in step 6 applies.
+   - Omit the section rather than filling it with generic text when no trigger applies.
+   - Add separate risk analysis when useful without adding `## Rollback` solely for that analysis.
    - If the TASK recommendation is `not needed`, delete the placeholder `## Tasks` section from the CHANGE file.
    - If the estimated implementation diff exceeds 500 lines or needs multiple reviewable checkpoints, keep one CHANGE as the scope contract and recommend `backtrail-create-task` to split implementation work.
    - Create multiple CHANGE records only when work has separate scope contracts or dependency relationships independent of task-level staging.
    - Keep CHANGE dependency links bidirectional: if a CHANGE lists another CHANGE in `Blocked By`, the blocker lists it in `Blocks`.
-9. Save the CHANGE and its `.backtrail/changes.md` entry with status, ADR links, blocked-by links, blocks links, and title/summary. Use `Proposed` unless the CHANGE is blocked by another CHANGE.
-10. When the TASK recommendation is `required` or `recommended`, ask whether to proceed with creating TASK records.
+10. Save the CHANGE and its `.backtrail/changes.md` entry with status, ADR links, blocked-by links, blocks links, and title/summary. Use `Proposed` unless the CHANGE is blocked by another CHANGE.
+11. When the TASK recommendation is `required` or `recommended`, ask whether to proceed with creating TASK records.
     - Use Yes/No buttons when `request_user_input` is available.
     - `Yes`: use `backtrail-create-task` with the selected CHANGE.
     - `No`: leave the CHANGE as created and report that implementation will run as one CHANGE unless TASKs are created later.
-11. Stop after docs/status changes. Do not implement code.
+12. Stop after docs/status changes. Do not implement code.
 
 ## Question UX
 

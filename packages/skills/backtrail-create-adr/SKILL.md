@@ -33,23 +33,33 @@ Use the text after this skill invocation as the decision brief.
    - If no starting number exists, use the highest `ADR-NNNNN` from `.backtrail/adl.md` + 1.
    - If `.backtrail/adl.md` is missing, create it and start at `ADR-00001` unless the brief has an explicit starting number.
 5. Stop if `.backtrail/adrs/adr-NNNNN-title-slug.md` already exists.
-6. Present rough approach before writing.
+6. Assess whether dedicated reversibility detail is required. Require it when the decision:
+   - destroys or irreversibly transforms data;
+   - creates a public contract or compatibility break;
+   - changes authentication, authorization, security, billing, or financial behavior;
+   - requires a migration, compatibility window, coordinated deployment, or manual recovery; or
+   - would be materially costly, risky, or operationally complex to reverse.
+7. Present rough approach before writing.
    - decision
    - key rationale
-   - risks/rollback
+   - independent risks, when useful
+   - reversibility assessment and, only when a trigger applies, the reversal or recovery plan
    - related ADRs, if any
-7. Ask only questions that change decision, scope, compatibility, verification, or rollback.
-8. Create `.backtrail/adrs/adr-NNNNN-title-slug.md` from `assets/adr-template.md`.
-9. Save the ADR and its `.backtrail/adl.md` entry with status `Proposed`.
-10. Ask whether to promote to `Accepted`.
+8. Ask only questions that change decision, scope, compatibility, verification, or a required reversal or recovery plan.
+9. Create `.backtrail/adrs/adr-NNNNN-title-slug.md` from `assets/adr-template.md`.
+   - Add a dedicated `## Reversibility` section only when a trigger in step 6 applies.
+   - Omit the section rather than filling it with generic text when no trigger applies.
+   - Keep independently useful risk analysis in the relevant section without adding `## Reversibility` solely for that analysis.
+10. Save the ADR and its `.backtrail/adl.md` entry with status `Proposed`.
+11. Ask whether to promote to `Accepted`.
     - Use Yes/No buttons when `request_user_input` is available.
     - `Yes`: update status in the ADR and `.backtrail/adl.md`.
     - `No`: leave `Proposed`.
-11. Ask whether to proceed with creating a CHANGE record.
+12. Ask whether to proceed with creating a CHANGE record.
     - Use Yes/No buttons when `request_user_input` is available.
     - `Yes`: use `backtrail-create-change`.
     - `No`: skip to the next step.
-12. Stop after docs/status changes. Do not implement code.
+13. Stop after docs/status changes. Do not implement code.
 
 ## Question UX
 

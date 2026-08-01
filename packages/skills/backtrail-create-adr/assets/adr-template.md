@@ -26,9 +26,7 @@ Negative:
 
 - Alternative: why it was not chosen.
 
-## Reversibility
-
-Describe how to roll back or supersede this decision, including any compatibility constraints.
+<!-- Add a dedicated Reversibility section only when this decision destroys or irreversibly transforms data; creates a public contract or compatibility break; changes authentication, authorization, security, billing, or financial behavior; requires a migration, compatibility window, coordinated deployment, or manual recovery; or would be materially costly, risky, or operationally complex to reverse. Otherwise omit it. -->
 
 ## Implemented By
 
