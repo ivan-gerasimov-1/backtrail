@@ -2,7 +2,7 @@
 
 | Status   | Date       | ADRs                                                                 | Blocked By | Blocks |
 | -------- | ---------- | -------------------------------------------------------------------- | ---------- | ------ |
-| Proposed | 2026-08-01 | [ADR-00005](../adrs/adr-00005-conditional-reversibility-sections.md) | -          | -      |
+| Done     | 2026-08-01 | [ADR-00005](../adrs/adr-00005-conditional-reversibility-sections.md) | -          | -      |
 
 ## Goal
 
